@@ -5,13 +5,16 @@ Test
 Compile
 
 // KGC
+
 gcc -o BB_KGC_Setup sha2.c BB_KGC_Setup.c -lgmp -lpbc
 gcc -o BB_KGC_Keygen sha2.c BB_KGC_Keygen.c -lgmp -lpbc
 
 // DNS
+
 gcc -o BB_DNS_Keygen sha2.c BB_DNS_Keygen.c -lgmp -lpbc
 
 // Common(import,export)
+
 gcc -o import import.c
 gcc -o export_ID export_ID.c
 gcc -o export_param_and_key export_param_and_key.c
