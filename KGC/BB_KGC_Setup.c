@@ -323,12 +323,16 @@ int main(int argc, char **argv)
 		{
 			case 's' :
 				BB_Setup(&bb_param);
+				break;
 			case 'k' :
 				BB_Keygen(&bb_param);
+				break;
 			case 'e' :
 				printf("export\n");
+				break;
 			case 'i' :
 				printf("import\n");
+				break;
 			case '?' :
 				printf("Usage : %s <mode> [option]\n", argv[0]);
 				return 0;
