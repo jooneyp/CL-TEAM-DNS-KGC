@@ -34,9 +34,7 @@ void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 	printf("Input domain name len: %d\n", Input_ID_len);
 
 	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
-	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성 
-
-	fclose(fp);
+	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
 }
 
 void BB_Hash_1(unsigned char *str, element_t H_1)
