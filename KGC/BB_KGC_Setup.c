@@ -44,6 +44,8 @@ void BB_Keygen(BB_SYS_PARAM *bb_param)
 
 	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
 	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성 
+
+	fclose(fp);
 }
 
 void BB_Hash_1(unsigned char *str, element_t H_1)
@@ -156,7 +158,7 @@ void BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_init_G1(h_ID, bb_param->pairing);
 	BB_Hash_1(ID, h_ID);
 
-	do{	
+	do {	
 		element_random(r);
 		element_pow_zn(temp, h_ID, r);
 		element_pow_zn(bb_param->sk_2, bb_param->g, r);
@@ -189,7 +191,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 {
 	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9;
 	unsigned char buf[MAX_INPUT];
-	printf("\nBB_Setup Start (param and msk_key are being generated\n");
+	printf("\nBB_Setup Start (param / msk_key generated)\n");
 
 	fp1 = fopen("My_param/g.param", "wb");
 	fp2 = fopen("My_param/g_1.param", "wb");
