@@ -26,7 +26,7 @@ static const char *aparam =
 	"sign1 1\n"
 	"sign0 1\n";
 
-int BB_Keygen(BB_SYS_PARAM *bb_param)
+void BB_Keygen(BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
 	unsigned char Input_ID[MAX_ID_len];
@@ -39,13 +39,11 @@ int BB_Keygen(BB_SYS_PARAM *bb_param)
 		printf("Input domain name len: %d\n", Input_ID_len);
 	} else {
 		printf("%s\n","NO Input_Domain_name.txt");
-		return 0;
+		system("-1");
 	}
 
-	BB_param_import(&bb_param);//구조체에 파라미터 및 키 등록
-	BB_KeyGen_level_1(Input_ID,&bb_param);//입력 받은 아이디에 대해 1 level의 키 생성 
-
-	return 0;
+	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
+	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성 
 }
 
 void BB_Hash_1(unsigned char *str, element_t H_1)
@@ -58,7 +56,7 @@ void BB_Hash_1(unsigned char *str, element_t H_1)
 	element_from_hash(H_1, md, SHA256_DIGEST_SIZE);
 }
 
-//디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
+// 디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
 int BB_param_import(BB_SYS_PARAM *bb_param) 
 {
 	FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
@@ -136,8 +134,8 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	return 0;
 }
 
-//입력된 아이디에 대하여 1 level의 키를 생성해서 디랙토리내 new_key_level_1 폴더에 저장
-int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param) 
+// 입력된 아이디에 대하여 1 level의 키를 생성해서 디랙토리내 new_key_level_1 폴더에 저장
+void BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param) 
 {
 	FILE *fp1, *fp2;
 	unsigned char buf[MAX_INPUT];
@@ -184,8 +182,6 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	fclose(fp2);
 
 	printf("\nBB_KeyGen_level_1 End\n");
-
-	return 0;
 }
 
 //기법에서 필요한 파라미터를 생성하는 알고리즘, 생성한 파라미터는 디랙토리내 new_param 폴더 내에 저장됨
