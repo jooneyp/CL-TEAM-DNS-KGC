@@ -64,7 +64,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
 	unsigned char buf[MAX_INPUT];
 
-	printf("\nBB_param_import Start!////////////////\n");
+	printf("BB_param_import Start\n");
 
 	fp1 = fopen("My_param/g.param", "rb");
 	fp2 = fopen("My_param/g_1.param", "rb");
@@ -82,7 +82,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 		element_init_G1(bb_param->msk_key, bb_param->pairing);
 		fread(buf, sizeof(char), 129, fp0);
 		element_from_bytes(bb_param->msk_key,buf); buf[0] = '\0';
-	    element_printf("\nbb_param->msk_key : %B\n", bb_param->msk_key);
+	    element_printf("bb_param->msk_key\n");
 	}
 
 	//변수로 사용하기전에 먼저 init해야함
@@ -131,7 +131,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 
 	//잘 읽어들였는지 페어링 테스트를 통해 확인
 	paring_test(bb_param);
-	printf("\nBB_param_import end!////////////////\n");
+	printf("BB_param_import end\n");
 
 	return 0;
 }
@@ -146,7 +146,7 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_t temp;
 	element_t h_ID;
 
-	printf("\n%s\n", "BB_KeyGen_level_1 Start!////////////////");
+	printf("\nBB_KeyGen_level_1 Start\n");
 
 	fp1 = fopen("new_key_level_1/sk_1.key", "wb");
 	fp2 = fopen("new_key_level_1/sk_2.key", "wb");
@@ -167,8 +167,8 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
 
 
-	element_printf("\nbb_param->sk_1 : %B\n", bb_param->sk_1);
-	element_printf("\nbb_param->sk_2 : %B\n", bb_param->sk_2);
+	element_printf("bb_param->sk_1\n");
+	element_printf("bb_param->sk_2\n");
 
 	element_to_bytes(buf,bb_param->sk_1);
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
@@ -181,7 +181,7 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	fclose(fp1);
 	fclose(fp2);
 
-	printf("\n%s\n", "BB_KeyGen_level_1 End!////////////////");
+	printf("\nBB_KeyGen_level_1 End\n");
 
 	return 0;
 }
