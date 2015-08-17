@@ -126,7 +126,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 }
 
 // 입력된 아이디에 대하여 1 level의 키를 생성해서 디랙토리내 new_key_level_1 폴더에 저장
-void BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param) 
+int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param) 
 {
 	FILE *fp1, *fp2;
 	unsigned char buf[MAX_INPUT];
@@ -173,9 +173,11 @@ void BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	fclose(fp2);
 
 	printf("\nBB_KeyGen_level_1 End\n");
+
+	return 0;
 }
 
-//기법에서 필요한 파라미터를 생성하는 알고리즘, 생성한 파라미터는 디랙토리내 new_param 폴더 내에 저장됨
+// 기법에서 필요한 파라미터를 생성하는 알고리즘, 생성한 파라미터는 디랙토리내 My_param 폴더 내에 저장됨
 void BB_Setup(BB_SYS_PARAM *bb_param)
 {
 	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9;
@@ -304,7 +306,7 @@ int paring_test(BB_SYS_PARAM *bb_param)
 
 int main(int argc, char **argv)
 {
-	BB_SYS_PARAM bb_param;
+	BB_SYS_PARAM bb_param1, bb_param2;
 	int param_opt;
 
 	while (-1 != (param_opt = getopt(argc, argv, "skei"))) {
@@ -312,13 +314,13 @@ int main(int argc, char **argv)
 		{
 			case 's' :
 				printf("BB_Setup---------------------------------------\n");
-				BB_Setup(&bb_param);
+				BB_Setup(&bb_param1);
 				printf("BB_Setup---------------------------------------\n");
 				break;
 			case 'k' :
 				printf("BB_Keygen---------------------------------------\n");
 				if(argc == 3)
-					BB_Keygen(argv[2], &bb_param);
+					BB_Keygen(argv[2], &bb_param2);
 				else
 					printf("Usage : %s <Domain Name>\n", argv[1]);
 				printf("BB_Keygen---------------------------------------\n");
@@ -330,7 +332,7 @@ int main(int argc, char **argv)
 				printf("import\n");
 				break;
 			case '?' :
-				printf("Usage : %s <mode> [option]\n", argv[0]);
+				printf("Usage : %s <mode (skei)> [option]\n", argv[0]);
 				return 0;
 		}
 	}
