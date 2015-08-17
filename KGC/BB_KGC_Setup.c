@@ -170,9 +170,12 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_printf("bb_param->sk_1\n");
 	element_printf("bb_param->sk_2\n");
 
-	element_to_bytes(buf,bb_param->sk_1);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
-	element_to_bytes(buf,bb_param->sk_2);
+	element_to_bytes(buf, bb_param->sk_1);
+	printf("\nfwrite start\n");
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);
+	printf("\nfwrite end\n");
+	buf[0] = '\0';
+	element_to_bytes(buf, bb_param->sk_2);
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
 
 	element_clear(r);
@@ -322,14 +325,14 @@ int main(int argc, char **argv)
 		switch(param_opt)
 		{
 			case 's' :
-				printf("\nBB_Setup---------------------------------------\n");
+				printf("BB_Setup---------------------------------------\n");
 				BB_Setup(&bb_param);
-				printf("\nBB_Setup---------------------------------------\n");
+				printf("BB_Setup---------------------------------------\n");
 				break;
 			case 'k' :
-				printf("\nBB_Keygen---------------------------------------\n");
+				printf("BB_Keygen---------------------------------------\n");
 				BB_Keygen(&bb_param);
-				printf("\nBB_Keygen---------------------------------------\n");
+				printf("BB_Keygen---------------------------------------\n");
 				break;
 			case 'e' :
 				printf("export\n");
