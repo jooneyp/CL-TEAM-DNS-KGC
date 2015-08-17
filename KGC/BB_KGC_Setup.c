@@ -191,7 +191,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 {
 	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9;
 	unsigned char buf[MAX_INPUT];
-	printf("\nBB_Setup Start (param and msk_key are being generated!!///////// \n");
+	printf("\nBB_Setup Start (param and msk_key are being generated\n");
 
 	fp1 = fopen("My_param/g.param", "wb");
 	fp2 = fopen("My_param/g_1.param", "wb");
@@ -276,7 +276,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	element_clear(bb_param->h_5);
 	element_clear(bb_param->msk_key);
 
-	printf("\nBB_Setup End(stored in My_param)////////////////////////// \n");
+	printf("BB_Setup End(stored in My_param)\n");
 }
 
 // 원소를 바이트로 바꾸었을때 바이트의 길이를 리턴
@@ -303,12 +303,12 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	if((element_cmp(temp1, temp2)) == 0) {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\nPairing test succeed!!\n");
+		printf("\nPairing test succeed\n");
 		return 0;
 	} else {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\nPairing test fail!! (something wrong)\n");
+		printf("\nPairing test fail\n");
 		return 1;
 	}
 }
