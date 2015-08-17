@@ -221,28 +221,23 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 
 int main()
 {
-
 	int Input_ID_len;
 	unsigned char Input_ID[MAX_ID_len];
-	BB_SYS_PARAM bb_param;//parameter 및 key를 담을수 있는 구조체 선언
 	FILE *fp;
-	
 
-	if((fp = fopen("Input_Domain_name.txt", "rt")) != NULL)
-	{
-	fscanf(fp, "%s", Input_ID);
-	Input_ID_len = strlen(Input_ID);
-	printf("Input domain name: %s \n", Input_ID);
-	printf("Input domain name len: %d\n", Input_ID_len);
+	if((fp = fopen("Input_Domain_name.txt", "rt")) != NULL) {
+		fscanf(fp, "%s", Input_ID);
+		Input_ID_len = strlen(Input_ID);
+		printf("Input domain name: %s \n", Input_ID);
+		printf("Input domain name len: %d\n", Input_ID_len);
+	} else {
+		printf("%s\n","NO Input_Domain_name.txt");
+		return 1;
 	}
-	else{printf("%s\n","NO Input_Domain_name.txt");return 1;}
-	
 
 	BB_param_import(&bb_param);//구조체에 파라미터 및 키 등록
 	BB_KeyGen_level_1(Input_ID,&bb_param);//입력 받은 아이디에 대해 1 level의 키 생성 
 
-
-	
 	return 0;
 }
 

@@ -7,6 +7,7 @@
 #include <sys/socket.h>
  
 #define BUFSIZE 4096
+#define TARGET_IP "192.168.0.1"
  
 void err_quit(char *msg) {
 	fputs(msg, stderr);
@@ -16,7 +17,7 @@ void err_quit(char *msg) {
 
  //TCP/IP FTP(File Transfer Protocol)클라이언트 부분(ID 전송) 
 	//디랙토리내 "Input_Domain_name.txt"
-int main()
+int main(int argc, char **argv)
 {
 	int retval;
 	int sock;
@@ -27,7 +28,7 @@ int main()
 		err_quit("socket() error");
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(9000);
-	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY); /*inet_addr("127.0.0.1");*/
+	serveraddr.sin_addr.s_addr = htonl(argv[1]); /*inet_addr("127.0.0.1");*/
 	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
 	if(retval == -1)
 		err_quit("connect() error");
