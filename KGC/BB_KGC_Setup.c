@@ -127,41 +127,33 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	element_clear(bb_param->msk_key);
 
 	printf("\nBB_Setup End(stored in new_param)////////////////////////// \n");
-
-
-
-
 }
 
-//파라미터로 직접 페어링 연산을 비교해 봄으로써 검증, 성공할 경우 0을 리턴 
+// 파라미터로 직접 페어링 연산을 비교해 봄으로써 검증, 성공할 경우 0을 리턴 
 int paring_test(BB_SYS_PARAM *bb_param)
 {
 	element_t temp1;
 	element_t temp2;
 	element_init_GT(temp1, bb_param->pairing);
 	element_init_GT(temp2, bb_param->pairing);
-	pairing_apply(temp1,bb_param->g,bb_param->msk_key,bb_param->pairing);
-	pairing_apply(temp2,bb_param->g_1,bb_param->g_2,bb_param->pairing);
+	pairing_apply(temp1, bb_param->g, bb_param->msk_key, bb_param->pairing);
+	pairing_apply(temp2, bb_param->g_1, bb_param->g_2, bb_param->pairing);
 
-	if((element_cmp(temp1,temp2))==0)
-	{
-	element_clear(temp1);
-	element_clear(temp2);
-	printf("\n%s\n", "Pairing test succeed!!");
-	return 0;
+	if((element_cmp(temp1, temp2)) == 0) {
+		element_clear(temp1);
+		element_clear(temp2);
+		printf("\n%s\n", "Pairing test succeed!!");
+		return 0;
+	} else {
+		element_clear(temp1);
+		element_clear(temp2);
+		printf("\n%s\n", "Pairing test fail!! (something wrong)");
+		return 1;
 	}
-	else
-	element_clear(temp1);
-	element_clear(temp2);
-	printf("\n%s\n", "Pairing test fail!!(something wrong)");
-	return 1;
 }
-
-
 
 int main()
 {
-
 	BB_SYS_PARAM bb_param;
 	BB_Setup(&bb_param);
 

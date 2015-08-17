@@ -20,12 +20,13 @@ gcc -o export_param_and_key export_param_and_key.c
 시연?순서(폴더생성과 파라미터값 이동을 제외하고는 꼭 순서 따라야하는것은 아님)
 
 -KGC 키생성 
-1. BB_KGC_Setup 실행하면 new_param 에 8개의 파라미터와 1개의 마스터키 생성됨
 
+1. BB_KGC_Setup 실행하면 new_param 에 8개의 파라미터와 1개의 마스터키 생성됨
 2. 9개의 파라미터와 마스터키 모두를 My_param폴더에 이동
 
 
 -DNS가 KGC로 부터 키발급
+
 1. DNS에서 Input_Domain_name.txt에 발급받고자 하는 ID입력하고 EXPORT폴더에 이동후 EXPORT_ID 실행(KGC는 IMPORT실행중)
 
 2. KGC에서 받은 Input_Domain_name.txt파일(IMPORT 폴더에 있음)을 KGC 폴더로 이동후 BB_KGC_Keygen실행, 새로운 키들이 new_key_level_1에 저장됨
@@ -36,6 +37,7 @@ gcc -o export_param_and_key export_param_and_key.c
 
 
 -DNS*가 DNS로 부터 키발급 받기
+
 1. DNS*에서 Input_Domain_name.txt에 발급받고자 하는 ID입력하고 EXPORT폴더에 이동후 EXPORT_ID 실행(DNS는 IMPORT실행중)
 
 2. DNS에서 받은 Input_Domain_name.txt파일(IMPORT 폴더에 있음)을 DNS폴더로 이동, BB_DNS_Keygen실행(My_Domain_name.txt에는 자신의 도메인이 들어가 있어여함), 새로운 키들이 new_key에 저장됨
