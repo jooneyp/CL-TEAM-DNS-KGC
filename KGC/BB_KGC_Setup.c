@@ -142,7 +142,7 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	if((element_cmp(temp1, temp2)) == 0) {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\nPairing test succeed!!\n", );
+		printf("\nPairing test succeed!!\n");
 		return 0;
 	} else {
 		element_clear(temp1);
@@ -158,7 +158,7 @@ int main()
 	BB_Setup(&bb_param);
 
 	system("cp -R new_param/* My_param");
-	printf("\nParameters copied to My_param\n")
+	printf("\nParameters copied to My_param\n");
 
 	return 0;
 }
