@@ -26,35 +26,6 @@ static const char *aparam =
 	"sign1 1\n"
 	"sign0 1\n";
 
-void BB_Keygen(BB_SYS_PARAM *bb_param);
-void BB_Hash_1(unsigned char *str, element_t H_1);
-int BB_param_import(BB_SYS_PARAM *bb_param); 
-int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param);
-
-void BB_Setup(BB_SYS_PARAM *bb_param);
-int element_len(element_t t);
-int paring_test(BB_SYS_PARAM *bb_param);
-
-int main(int argc, char **argv)
-{
-	BB_SYS_PARAM bb_param;
-
-	if (argc == 1) {
-		printf("Usage : %s <mode> [option]\n", argv[0]);
-		return 0;
-	} else if (argv[1] == "-s") {	// Setup
-		BB_Setup(&bb_param);
-	} else if (argv[1] == "-k") {	// Keygen
-		BB_Keygen(&bb_param);
-	} else if (argv[1] == "-e") {	// Export
-		printf("export\n");
-	} else if (argv[1] == "-i") {	// Import
-		printf("import\n");
-	}
-
-	return 0;
-}
-
 int BB_Keygen(BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
@@ -341,3 +312,24 @@ int paring_test(BB_SYS_PARAM *bb_param)
 		return 1;
 	}
 }
+
+int main(int argc, char **argv)
+{
+	BB_SYS_PARAM bb_param;
+
+	if (argc == 1) {
+		printf("Usage : %s <mode> [option]\n", argv[0]);
+		return 0;
+	} else if (argv[1] == "-s") {	// Setup
+		BB_Setup(&bb_param);
+	} else if (argv[1] == "-k") {	// Keygen
+		BB_Keygen(&bb_param);
+	} else if (argv[1] == "-e") {	// Export
+		printf("export\n");
+	} else if (argv[1] == "-i") {	// Import
+		printf("import\n");
+	}
+
+	return 0;
+}
+
