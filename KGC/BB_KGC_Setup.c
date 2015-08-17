@@ -276,7 +276,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	element_clear(bb_param->h_5);
 	element_clear(bb_param->msk_key);
 
-	printf("BB_Setup End(stored in My_param)\n");
+	printf("BB_Setup End(Parameters stored in My_param)\n\n");
 }
 
 // 원소를 바이트로 바꾸었을때 바이트의 길이를 리턴
@@ -303,12 +303,12 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	if((element_cmp(temp1, temp2)) == 0) {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\nPairing test succeed\n");
+		printf("Pairing test succeed\n");
 		return 0;
 	} else {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\nPairing test fail\n");
+		printf("Pairing test fail\n");
 		return 1;
 	}
 }
@@ -322,10 +322,14 @@ int main(int argc, char **argv)
 		switch(param_opt)
 		{
 			case 's' :
+				printf("\nBB_Setup---------------------------------------\n");
 				BB_Setup(&bb_param);
+				printf("\nBB_Setup---------------------------------------\n");
 				break;
 			case 'k' :
+				printf("\nBB_Keygen---------------------------------------\n");
 				BB_Keygen(&bb_param);
+				printf("\nBB_Keygen---------------------------------------\n");
 				break;
 			case 'e' :
 				printf("export\n");
