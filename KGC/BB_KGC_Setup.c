@@ -26,21 +26,12 @@ static const char *aparam =
 	"sign1 1\n"
 	"sign0 1\n";
 
-void BB_Keygen(BB_SYS_PARAM *bb_param)
+void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
-	unsigned char Input_ID[MAX_ID_len];
-	FILE *fp;
-
-	if((fp = fopen("Input_Domain_name.txt", "rt")) != NULL) {
-		fscanf(fp, "%s", Input_ID);
-		Input_ID_len = strlen(Input_ID);
-		printf("Input domain name: %s \n", Input_ID);
-		printf("Input domain name len: %d\n", Input_ID_len);
-	} else {
-		printf("%s\n","NO Input_Domain_name.txt");
-		system("-1");
-	}
+	Input_ID_len = strlen(Input_ID);
+	printf("Input domain name: %s\n", Input_ID);
+	printf("Input domain name len: %d\n", Input_ID_len);
 
 	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
 	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성 
@@ -328,7 +319,10 @@ int main(int argc, char **argv)
 				break;
 			case 'k' :
 				printf("BB_Keygen---------------------------------------\n");
-				BB_Keygen(&bb_param);
+				if(argc == 3)
+					BB_Keygen(argv[2], &bb_param);
+				else
+					printf("Usage : %s <Domain Name>\n", argv[1]);
 				printf("BB_Keygen---------------------------------------\n");
 				break;
 			case 'e' :
