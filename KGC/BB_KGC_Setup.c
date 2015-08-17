@@ -171,12 +171,11 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_printf("bb_param->sk_2\n");
 
 	element_to_bytes(buf, bb_param->sk_1);
-	printf("\nfwrite start\n");
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);
-	printf("\nfwrite end\n");
 	buf[0] = '\0';
 	element_to_bytes(buf, bb_param->sk_2);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp2);
+	buf[0] = '\0';
 
 	element_clear(r);
 	element_clear(temp);
