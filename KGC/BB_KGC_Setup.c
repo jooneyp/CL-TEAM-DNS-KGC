@@ -10,7 +10,7 @@
 #define MAX_INPUT 1024
 
 
-//페어링 생성을 위한 파라미터 선언
+// 페어링 생성을 위한 파라미터 선언
 static const char *aparam =
 	"type a\n"
 	"q 8780710799663312522437781984754049815806883199414208211028653399266475630880222957078625179422662221423155858769582317459277713367317481324925129998224791\n"
@@ -22,14 +22,14 @@ static const char *aparam =
 	"sign0 1\n";
 
 
-//원소를 바이트로 바꾸었을때 바이트의 길이를 리턴
+// 원소를 바이트로 바꾸었을때 바이트의 길이를 리턴
 int element_len(element_t t)
 {
 	int n;
 	unsigned char buf[MAX_INPUT];
-	element_to_bytes(buf,t);
-    n=(int)strlen(buf);
-    buf[0]='\0';
+	element_to_bytes(buf, t);
+    n = (int)strlen(buf);
+    buf[0] = '\0';
 	return n;
 }
 
@@ -38,19 +38,19 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 {
 
 
-	FILE *fp1,*fp2,*fp3,*fp4,*fp5,*fp6,*fp7,*fp8,*fp9;
+	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9;
 	unsigned char buf[MAX_INPUT];
 	printf("\nBB_Setup Start (new param and msk_key are being generated!!///////// \n");
 
-	fp1=fopen("new_param/g.param","wb");
-	fp2=fopen("new_param/g_1.param","wb");
-	fp3=fopen("new_param/g_2.param","wb");
-	fp4=fopen("new_param/h_1.param","wb");
-	fp5=fopen("new_param/h_2.param","wb");
-	fp6=fopen("new_param/h_3.param","wb");
-	fp7=fopen("new_param/h_4.param","wb");
-	fp8=fopen("new_param/h_5.param","wb");
-	fp9=fopen("new_param/msk_key.param","wb"); 
+	fp1 = fopen("new_param/g.param", "wb");
+	fp2 = fopen("new_param/g_1.param", "wb");
+	fp3 = fopen("new_param/g_2.param", "wb");
+	fp4 = fopen("new_param/h_1.param", "wb");
+	fp5 = fopen("new_param/h_2.param", "wb");
+	fp6 = fopen("new_param/h_3.param", "wb");
+	fp7 = fopen("new_param/h_4.param", "wb");
+	fp8 = fopen("new_param/h_5.param", "wb");
+	fp9 = fopen("new_param/msk_key.param", "wb"); 
 
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 	element_init_G1(bb_param->g, bb_param->pairing);
@@ -65,47 +65,47 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	element_init_Zr(bb_param->msk_alpha, bb_param->pairing);
 	element_init_G1(bb_param->msk_key, bb_param->pairing);
 	
-	do{element_random(bb_param->g);}while(element_len(bb_param->g)<128);
-	do{element_random(bb_param->g_2);}while(element_len(bb_param->g_2)<128);
-	do{element_random(bb_param->h_1);}while(element_len(bb_param->h_1)<128);
-	do{element_random(bb_param->h_2);}while(element_len(bb_param->h_2)<128);
-	do{element_random(bb_param->h_3);}while(element_len(bb_param->h_3)<128);
-	do{element_random(bb_param->h_4);}while(element_len(bb_param->h_4)<128);
-	do{element_random(bb_param->h_5);}while(element_len(bb_param->h_5)<128);
-	do{element_random(bb_param->msk_alpha);
-	element_pow_zn(bb_param->g_1, bb_param->g, bb_param->msk_alpha);
+	do { element_random(bb_param->g); } while (element_len(bb_param->g) < 128);
+	do { element_random(bb_param->g_2); } while (element_len(bb_param->g_2) < 128);
+	do { element_random(bb_param->h_1); } while (element_len(bb_param->h_1) < 128);
+	do { element_random(bb_param->h_2); } while (element_len(bb_param->h_2) < 128);
+	do { element_random(bb_param->h_3); } while (element_len(bb_param->h_3) < 128);
+	do { element_random(bb_param->h_4); } while (element_len(bb_param->h_4) < 128);
+	do { element_random(bb_param->h_5); } while (element_len(bb_param->h_5) < 128);
+	do { element_random(bb_param->msk_alpha);
+ 	element_pow_zn(bb_param->g_1, bb_param->g, bb_param->msk_alpha);
 	element_pow_zn(bb_param->msk_key, bb_param->g_2, bb_param->msk_alpha);}
-	while((element_len(bb_param->g_1)<128)||(element_len(bb_param->msk_key)<128));
+	while((element_len(bb_param->g_1) < 128) || (element_len(bb_param->msk_key) < 128));
 
 	paring_test(bb_param);
 
 
-	element_to_bytes(buf,bb_param->g);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
+	element_to_bytes(buf, bb_param->g);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->g_1);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
+	element_to_bytes(buf, bb_param->g_1);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp2);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->g_2);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp3);buf[0]='\0';
+	element_to_bytes(buf, bb_param->g_2);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp3);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->h_1);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp4);buf[0]='\0';
+	element_to_bytes(buf, bb_param->h_1);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp4);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->h_2);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp5);buf[0]='\0';
+	element_to_bytes(buf, bb_param->h_2);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp5);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->h_3);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp6);buf[0]='\0';
+	element_to_bytes(buf, bb_param->h_3);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp6);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->h_4);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp7);buf[0]='\0';
+	element_to_bytes(buf, bb_param->h_4);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp7);	buf[0] = '\0';
 
-	element_to_bytes(buf,bb_param->h_5);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp8);buf[0]='\0';
+	element_to_bytes(buf, bb_param->h_5);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp8);	buf[0] = '\0';
 	
-	element_to_bytes(buf,bb_param->msk_key);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp9);buf[0]='\0';
+	element_to_bytes(buf, bb_param->msk_key);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp9);	buf[0] = '\0';
 
 	fclose(fp1);
 	fclose(fp2);
@@ -142,12 +142,12 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	if((element_cmp(temp1, temp2)) == 0) {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\n%s\n", "Pairing test succeed!!");
+		printf("\nPairing test succeed!!\n", );
 		return 0;
 	} else {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("\n%s\n", "Pairing test fail!! (something wrong)");
+		printf("\nPairing test fail!! (something wrong)\n");
 		return 1;
 	}
 }
@@ -156,6 +156,9 @@ int main()
 {
 	BB_SYS_PARAM bb_param;
 	BB_Setup(&bb_param);
+
+	system("cp -R new_param/* My_param");
+	printf("\nParameters copied to My_param\n")
 
 	return 0;
 }
