@@ -6,6 +6,7 @@
 #include <gmp.h>
 #include <pbc/pbc.h>
 #include "BB04.h"
+#include "sha2.h"
 
 #define STDIN 0
 #define STDOUT 1
@@ -54,7 +55,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void BB_Keygen(BB_SYS_PARAM *bb_param)
+int BB_Keygen(BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
 	unsigned char Input_ID[MAX_ID_len];
@@ -67,7 +68,7 @@ void BB_Keygen(BB_SYS_PARAM *bb_param)
 		printf("Input domain name len: %d\n", Input_ID_len);
 	} else {
 		printf("%s\n","NO Input_Domain_name.txt");
-		return 1;
+		return 0;
 	}
 
 	BB_param_import(&bb_param);//구조체에 파라미터 및 키 등록
@@ -107,10 +108,10 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 
 	//마스터키가 있는 경우 등록(KGC이므로 있어야함) 
 	if((fp0 = fopen("My_param/msk_key.param", "rb")) != NULL) {
-	element_init_G1(bb_param->msk_key, bb_param->pairing);
-	fread(buf, sizeof(char), 129, fp0);
-	element_from_bytes(bb_param->msk_key,buf); buf[0] = '\0';
-    element_printf("\nbb_param->msk_key : %B\n", bb_param->msk_key);
+		element_init_G1(bb_param->msk_key, bb_param->pairing);
+		fread(buf, sizeof(char), 129, fp0);
+		element_from_bytes(bb_param->msk_key,buf); buf[0] = '\0';
+	    element_printf("\nbb_param->msk_key : %B\n", bb_param->msk_key);
 	}
 
 	//변수로 사용하기전에 먼저 init해야함
