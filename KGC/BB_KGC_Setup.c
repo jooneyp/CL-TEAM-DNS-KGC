@@ -81,31 +81,31 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 
 
 	element_to_bytes(buf, bb_param->g);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->g_1);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp2);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->g_2);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp3);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp3); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->h_1);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp4);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp4); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->h_2);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp5);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp5); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->h_3);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp6);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp6); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->h_4);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp7);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp7); buf[0] = '\0';
 
 	element_to_bytes(buf, bb_param->h_5);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp8);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp8); buf[0] = '\0';
 	
 	element_to_bytes(buf, bb_param->msk_key);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp9);	buf[0] = '\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp9); buf[0] = '\0';
 
 	fclose(fp1);
 	fclose(fp2);

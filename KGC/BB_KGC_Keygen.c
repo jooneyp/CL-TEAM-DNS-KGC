@@ -46,8 +46,8 @@ int element_len(element_t t)
 	int n;
 	unsigned char buf[MAX_INPUT];
 	element_to_bytes(buf,t);
-    n=(int)strlen(buf);
-    buf[0]='\0';
+    n = (int)strlen(buf);
+    buf[0] = '\0';
 	return n;
 }
 
@@ -59,20 +59,20 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	element_t temp2;
 	element_init_GT(temp1, bb_param->pairing);
 	element_init_GT(temp2, bb_param->pairing);
-	pairing_apply(temp1,bb_param->g,bb_param->msk_key,bb_param->pairing);
-	pairing_apply(temp2,bb_param->g_1,bb_param->g_2,bb_param->pairing);
+	pairing_apply(temp1, bb_param->g, bb_param->msk_key, bb_param->pairing);
+	pairing_apply(temp2, bb_param->g_1, bb_param->g_2, bb_param->pairing);
 
-	if((element_cmp(temp1,temp2))==0)
+	if((element_cmp(temp1, temp2)) == 0)
 	{
 	element_clear(temp1);
 	element_clear(temp2);
-	printf("\n%s\n", "Pairing test succeed!!");
+	printf("\nPairing test succeed!!\n");
 	return 0;
 	}
 	else
 	element_clear(temp1);
 	element_clear(temp2);
-	printf("\n%s\n", "Pairing test fail!!(something wrong)");
+	printf("\nPairing test fail!!(something wrong)\n");
 	return 1;
 }
 
@@ -80,28 +80,28 @@ int paring_test(BB_SYS_PARAM *bb_param)
 //디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
 int BB_param_import(BB_SYS_PARAM *bb_param)
 {
-	FILE *fp0, *fp1,*fp2,*fp3,*fp4,*fp5,*fp6,*fp7,*fp8;
+	FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
 	unsigned char buf[MAX_INPUT];
 
-	printf("\n%s\n", "BB_param_import Start!////////////////");
+	printf("\nBB_param_import Start!////////////////\n");
 
-	fp1=fopen("My_param/g.param","rb");
-	fp2=fopen("My_param/g_1.param","rb");
-	fp3=fopen("My_param/g_2.param","rb");
-	fp4=fopen("My_param/h_1.param","rb");
-	fp5=fopen("My_param/h_2.param","rb");
-	fp6=fopen("My_param/h_3.param","rb");
-	fp7=fopen("My_param/h_4.param","rb");
-	fp8=fopen("My_param/h_5.param","rb");
+	fp1 = fopen("My_param/g.param", "rb");
+	fp2 = fopen("My_param/g_1.param", "rb");
+	fp3 = fopen("My_param/g_2.param", "rb");
+	fp4 = fopen("My_param/h_1.param", "rb");
+	fp5 = fopen("My_param/h_2.param", "rb");
+	fp6 = fopen("My_param/h_3.param", "rb");
+	fp7 = fopen("My_param/h_4.param", "rb");
+	fp8 = fopen("My_param/h_5.param", "rb");
 	//페어링 생성
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 
 	//마스터키가 있는 경우 등록(KGC이므로 있어야함) 
-	if((fp0=fopen("My_param/msk_key.param","rb"))!=NULL)
+	if((fp0 = fopen("My_param/msk_key.param", "rb")) != NULL)
 	{
 	element_init_G1(bb_param->msk_key, bb_param->pairing);
-	fread(buf,sizeof(char),129,fp0);
-	element_from_bytes(bb_param->msk_key,buf); buf[0]='\0';
+	fread(buf, sizeof(char), 129, fp0);
+	element_from_bytes(bb_param->msk_key,buf); buf[0] = '\0';
     element_printf("\nbb_param->msk_key : %B\n", bb_param->msk_key);
 	}
 
@@ -117,35 +117,35 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	element_init_G1(bb_param->h_5, bb_param->pairing);
 
 	//하나하나 파일로 부터 읽어오고, 원소로 변형
-	fread(buf,sizeof(char),129,fp1);
+	fread(buf, sizeof(char), 129, fp1);
 	element_from_bytes(bb_param->g,buf); buf[0]='\0';
     // element_printf("\nbb_param->g : %B\n", bb_param->g);
 
-	fread(buf,sizeof(char),129,fp2);
+	fread(buf, sizeof(char), 129, fp2);
 	element_from_bytes(bb_param->g_1,buf);  buf[0]='\0';
     // element_printf("\nbb_param->g_1 : %B\n", bb_param->g_1);
 
-	fread(buf,sizeof(char),129,fp3);
+	fread(buf, sizeof(char), 129, fp3);
 	element_from_bytes(bb_param->g_2,buf);  buf[0]='\0';
     // element_printf("\nbb_param->g_2 : %B\n", bb_param->g_2);
 
-	fread(buf,sizeof(char),129,fp4);
+	fread(buf, sizeof(char), 129, fp4);
 	element_from_bytes(bb_param->h_1,buf);  buf[0]='\0';
     // element_printf("\nbb_param->h_1 : %B\n", bb_param->h_1);
 
-	fread(buf,sizeof(char),129,fp5);
+	fread(buf, sizeof(char), 129, fp5);
 	element_from_bytes(bb_param->h_2,buf);  buf[0]='\0';
     // element_printf("\nbb_param->h_2 : %B\n", bb_param->h_2);
 
-	fread(buf,sizeof(char),129,fp6);
+	fread(buf, sizeof(char), 129, fp6);
 	element_from_bytes(bb_param->h_3,buf);  buf[0]='\0';
     // element_printf("\nbb_param->h_3 : %B\n", bb_param->h_3);
 
-	fread(buf,sizeof(char),129,fp7);
+	fread(buf, sizeof(char), 129, fp7);
 	element_from_bytes(bb_param->h_4,buf);  buf[0]='\0';
     // element_printf("\nbb_param->h_4 : %B\n", bb_param->h_4);
 
-	fread(buf,sizeof(char),129,fp8);
+	fread(buf, sizeof(char), 129, fp8);
 	element_from_bytes(bb_param->h_5,buf);  buf[0]='\0';
     // element_printf("\nbb_param->h_5 : %B\n", bb_param->h_5);
 
@@ -161,7 +161,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 
 	//잘 읽어들였는지 페어링 테스트를 통해 확인
 	paring_test(bb_param);
-	printf("\n%s\n", "BB_param_import end!////////////////");
+	printf("\nBB_param_import end!////////////////\n");
 
 	return 0;
 }
@@ -170,7 +170,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 //입력된 아이디에 대하여 1 level의 키를 생성해서 디랙토리내 new_key_level_1 폴더에 저장
 int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 {
-	FILE *fp1,*fp2;
+	FILE *fp1, *fp2;
 	unsigned char buf[MAX_INPUT];
 
 	element_t r;
@@ -179,8 +179,8 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 
 	printf("\n%s\n", "BB_KeyGen_level_1 Start!////////////////");
 
-	fp1=fopen("new_key_level_1/sk_1.key","wb");
-	fp2=fopen("new_key_level_1/sk_2.key","wb");
+	fp1 = fopen("new_key_level_1/sk_1.key", "wb");
+	fp2 = fopen("new_key_level_1/sk_2.key", "wb");
 
 	element_init_G1(bb_param->sk_1, bb_param->pairing);
 	element_init_G1(bb_param->sk_2, bb_param->pairing);
@@ -191,19 +191,20 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 
 	do{	
 		element_random(r);
-		element_pow_zn(temp,h_ID,r);
+		element_pow_zn(temp, h_ID, r);
 		element_pow_zn(bb_param->sk_2, bb_param->g, r);
 		element_mul(bb_param->sk_1, bb_param->msk_key, temp);
-	}while((element_len(bb_param->sk_1)<128)||(element_len(bb_param->sk_2)<128));
+	} while 
+	((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
 
 
 	element_printf("\nbb_param->sk_1 : %B\n", bb_param->sk_1);
 	element_printf("\nbb_param->sk_2 : %B\n", bb_param->sk_2);
 
 	element_to_bytes(buf,bb_param->sk_1);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
 	element_to_bytes(buf,bb_param->sk_2);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
 
 	element_clear(r);
 	element_clear(temp);
@@ -227,12 +228,12 @@ int main()
 	FILE *fp;
 	
 
-	if((fp=fopen("Input_Domain_name.txt","rt"))!=NULL)
+	if((fp = fopen("Input_Domain_name.txt", "rt")) != NULL)
 	{
-	fscanf(fp,"%s",Input_ID);
-	Input_ID_len=strlen(Input_ID);
-	printf("Input domain name: %s \n",Input_ID);
-	printf("Input domain name len: %d\n",Input_ID_len);
+	fscanf(fp, "%s", Input_ID);
+	Input_ID_len = strlen(Input_ID);
+	printf("Input domain name: %s \n", Input_ID);
+	printf("Input domain name len: %d\n", Input_ID_len);
 	}
 	else{printf("%s\n","NO Input_Domain_name.txt");return 1;}
 	
