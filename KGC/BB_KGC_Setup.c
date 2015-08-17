@@ -316,18 +316,23 @@ int paring_test(BB_SYS_PARAM *bb_param)
 int main(int argc, char **argv)
 {
 	BB_SYS_PARAM bb_param;
+	int param_opt;
 
-	if (argc == 1) {
-		printf("Usage : %s <mode> [option]\n", argv[0]);
-		return 0;
-	} else if (argv[1] == "-s") {	// Setup
-		BB_Setup(&bb_param);
-	} else if (argv[1] == "-k") {	// Keygen
-		BB_Keygen(&bb_param);
-	} else if (argv[1] == "-e") {	// Export
-		printf("export\n");
-	} else if (argv[1] == "-i") {	// Import
-		printf("import\n");
+	while (-1 != (param_opt = getopt(argc, argv, "skei"))) {
+		switch(param_opt)
+		{
+			case 's' :
+				BB_Setup(&bb_param);
+			case 'k' :
+				BB_Keygen(&bb_param);
+			case 'e' :
+				printf("export\n");
+			case 'i' :
+				printf("import\n");
+			case '?' :
+				printf("Usage : %s <mode> [option]\n", argv[0]);
+				return 0;
+		}
 	}
 
 	return 0;
