@@ -7,7 +7,11 @@
 #include <pbc/pbc.h>
 #include "BB04.h"
 
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
 #define MAX_INPUT 1024
+#define MAX_ID_len 100
 
 
 // 페어링 생성을 위한 파라미터 선언
@@ -33,7 +37,7 @@ int paring_test(BB_SYS_PARAM *bb_param);
 int main(int argc, char **argv)
 {
 	BB_SYS_PARAM bb_param;
-	
+
 	if (argc == 1) {
 		printf("Usage : %s <mode> [option]\n", argv[0]);
 		return 0;
