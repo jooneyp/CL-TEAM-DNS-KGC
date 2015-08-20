@@ -63,10 +63,7 @@ void BB_import_File_Controller(element_t e, char *filename) {
 int BB_param_import(BB_SYS_PARAM *bb_param) 
 {
 	// FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
-<<<<<<< HEAD
 	FILE *fp0;
-=======
->>>>>>> origin/master
 	unsigned char buf[MAX_INPUT];
 
 	printf("BB_param_import Start\n");
