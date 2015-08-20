@@ -29,14 +29,14 @@ static const char *aparam =
 void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
-	char ID[MAX_ID_len] = Input_ID;
+	char ID[MAX_ID_len];
 	Input_ID_len = strlen(Input_ID);
 	printf("Input domain name: %s\n", Input_ID);
 	printf("Input domain name len: %d\n", Input_ID_len);
 
 
-	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
-	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
+	BB_param_import(bb_param); // 구조체에 파라미터 및 키 등록
+	BB_KeyGen_level_1(ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
 }
 
 void BB_Hash_1(unsigned char *str, element_t H_1)
@@ -135,8 +135,8 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 		((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
 
 
-	element_printf("bb_param->sk_1\n");
-	element_printf("bb_param->sk_2\n");
+	element_printf("bb_param->sk_1 : %B\n", bb_param->sk_1);
+	element_printf("bb_param->sk_2 : %B\n", bb_param->sk_2);
 
 	element_to_bytes(buf, bb_param->sk_1);
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);
