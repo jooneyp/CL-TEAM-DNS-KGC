@@ -29,9 +29,11 @@ static const char *aparam =
 void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
+	char ID[MAX_ID_len] = Input_ID;
 	Input_ID_len = strlen(Input_ID);
 	printf("Input domain name: %s\n", Input_ID);
 	printf("Input domain name len: %d\n", Input_ID_len);
+
 
 	BB_param_import(&bb_param); // 구조체에 파라미터 및 키 등록
 	BB_KeyGen_level_1(Input_ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
@@ -77,7 +79,6 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	    element_printf("bb_param->msk_key\n");
 	}
 
-	//변수로 사용하기전에 먼저 init해야함
 	element_init_G1(bb_param->g, bb_param->pairing);
 	element_init_G1(bb_param->g_1, bb_param->pairing);
 	element_init_G1(bb_param->g_2, bb_param->pairing);
@@ -210,7 +211,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	BB_Setup_File_Controller(bb_param->h_4, "My_param/h_4.param");
 	BB_Setup_File_Controller(bb_param->h_5, "My_param/h_5.param");
 	BB_Setup_File_Controller(bb_param->msk_key, "My_param/msk_key.param");
-	
+
 	element_clear(bb_param->g);
 	element_clear(bb_param->g_1);
 	element_clear(bb_param->g_2);
