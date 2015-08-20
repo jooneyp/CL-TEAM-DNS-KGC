@@ -47,22 +47,29 @@ void BB_Hash_1(unsigned char *str, element_t H_1)
 	element_from_hash(H_1, md, SHA256_DIGEST_SIZE);
 }
 
+void BB_import_File_Controller(element_t e, char *filename) {
+	FILE *fp;
+	unsigned char buf[MAX_INPUT];
+
+	fp = fopen(filename, "rb");
+
+	fread(buf, sizeof(char), 129, fp);
+	element_from_bytes(e, buf);
+
+	fclose(fp);	
+}
+
 // 디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
 int BB_param_import(BB_SYS_PARAM *bb_param) 
 {
-	FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
+	// FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
+<<<<<<< HEAD
+	FILE *fp0;
+=======
+>>>>>>> origin/master
 	unsigned char buf[MAX_INPUT];
 
 	printf("BB_param_import Start\n");
-
-	fp1 = fopen("My_param/g.param", "rb");
-	fp2 = fopen("My_param/g_1.param", "rb");
-	fp3 = fopen("My_param/g_2.param", "rb");
-	fp4 = fopen("My_param/h_1.param", "rb");
-	fp5 = fopen("My_param/h_2.param", "rb");
-	fp6 = fopen("My_param/h_3.param", "rb");
-	fp7 = fopen("My_param/h_4.param", "rb");
-	fp8 = fopen("My_param/h_5.param", "rb");
 	//페어링 생성
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 
@@ -84,39 +91,57 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	element_init_G1(bb_param->h_4, bb_param->pairing);
 	element_init_G1(bb_param->h_5, bb_param->pairing);
 
-	//하나하나 파일로 부터 읽어오고, 원소로 변형
-	fread(buf, sizeof(char), 129, fp1);
-	element_from_bytes(bb_param->g,buf); buf[0]='\0';
+	BB_import_File_Controller(bb_param->g, "My_param/g.param");
+	BB_import_File_Controller(bb_param->g_1, "My_param/g_1.param");
+	BB_import_File_Controller(bb_param->g_2, "My_param/g_2.param");
+	BB_import_File_Controller(bb_param->h_1, "My_param/h_1.param");
+	BB_import_File_Controller(bb_param->h_2, "My_param/h_2.param");
+	BB_import_File_Controller(bb_param->h_3, "My_param/h_3.param");
+	BB_import_File_Controller(bb_param->h_4, "My_param/h_4.param");
+	BB_import_File_Controller(bb_param->h_5, "My_param/h_5.param");
 
-	fread(buf, sizeof(char), 129, fp2);
-	element_from_bytes(bb_param->g_1,buf);  buf[0]='\0';
+	// fp1 = fopen("My_param/g.param", "rb");
+	// fp2 = fopen("My_param/g_1.param", "rb");
+	// fp3 = fopen("My_param/g_2.param", "rb");
+	// fp4 = fopen("My_param/h_1.param", "rb");
+	// fp5 = fopen("My_param/h_2.param", "rb");
+	// fp6 = fopen("My_param/h_3.param", "rb");
+	// fp7 = fopen("My_param/h_4.param", "rb");
+	// fp8 = fopen("My_param/h_5.param", "rb");
 
-	fread(buf, sizeof(char), 129, fp3);
-	element_from_bytes(bb_param->g_2,buf);  buf[0]='\0';
+	// //하나하나 파일로 부터 읽어오고, 원소로 변형
+	// fread(buf, sizeof(char), 129, fp1);
+	// element_from_bytes(bb_param->g, buf); buf[0]='\0';
 
-	fread(buf, sizeof(char), 129, fp4);
-	element_from_bytes(bb_param->h_1,buf);  buf[0]='\0';
+	// fread(buf, sizeof(char), 129, fp2);
+	// element_from_bytes(bb_param->g_1, buf);  buf[0]='\0';
 
-	fread(buf, sizeof(char), 129, fp5);
-	element_from_bytes(bb_param->h_2,buf);  buf[0]='\0';
+	// fread(buf, sizeof(char), 129, fp3);
+	// element_from_bytes(bb_param->g_2, buf);  buf[0]='\0';
 
-	fread(buf, sizeof(char), 129, fp6);
-	element_from_bytes(bb_param->h_3,buf);  buf[0]='\0';
+	// fread(buf, sizeof(char), 129, fp4);
+	// element_from_bytes(bb_param->h_1, buf);  buf[0]='\0';
 
-	fread(buf, sizeof(char), 129, fp7);
-	element_from_bytes(bb_param->h_4,buf);  buf[0]='\0';
+	// fread(buf, sizeof(char), 129, fp5);
+	// element_from_bytes(bb_param->h_2, buf);  buf[0]='\0';
 
-	fread(buf, sizeof(char), 129, fp8);
-	element_from_bytes(bb_param->h_5,buf);  buf[0]='\0';
+	// fread(buf, sizeof(char), 129, fp6);
+	// element_from_bytes(bb_param->h_3, buf);  buf[0]='\0';
 
-	fclose(fp1);
-	fclose(fp2);
-	fclose(fp3);
-	fclose(fp4);
-	fclose(fp5);
-	fclose(fp6);
-	fclose(fp7);
-	fclose(fp8);
+	// fread(buf, sizeof(char), 129, fp7);
+	// element_from_bytes(bb_param->h_4, buf);  buf[0]='\0';
+
+	// fread(buf, sizeof(char), 129, fp8);
+	// element_from_bytes(bb_param->h_5, buf);  buf[0]='\0';
+
+	// fclose(fp1);
+	// fclose(fp2);
+	// fclose(fp3);
+	// fclose(fp4);
+	// fclose(fp5);
+	// fclose(fp6);
+	// fclose(fp7);
+	// fclose(fp8);
 
 	//잘 읽어들였는지 페어링 테스트를 통해 확인
 	paring_test(bb_param);
@@ -153,7 +178,7 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 		element_pow_zn(bb_param->sk_2, bb_param->g, r);
 		element_mul(bb_param->sk_1, bb_param->msk_key, temp);
 	} while 
-	((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
+		((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
 
 
 	element_printf("bb_param->sk_1\n");
@@ -177,22 +202,24 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	return 0;
 }
 
+void BB_Setup_File_Controller(element_t e, char *filename) {
+	FILE *fp;
+	unsigned char buf[MAX_INPUT];
+
+	fp = fopen(filename, "wb");
+
+	element_to_bytes(buf, e);
+	fwrite(buf, sizeof(char), (int)strlen(buf), fp);
+
+	fclose(fp);	
+}
+
 // 기법에서 필요한 파라미터를 생성하는 알고리즘, 생성한 파라미터는 디랙토리내 My_param 폴더 내에 저장됨
 void BB_Setup(BB_SYS_PARAM *bb_param)
 {
-	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9;
+	// FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8;
 	unsigned char buf[MAX_INPUT];
 	printf("\nBB_Setup Start (param / msk_key generated)\n");
-
-	fp1 = fopen("My_param/g.param", "wb");
-	fp2 = fopen("My_param/g_1.param", "wb");
-	fp3 = fopen("My_param/g_2.param", "wb");
-	fp4 = fopen("My_param/h_1.param", "wb");
-	fp5 = fopen("My_param/h_2.param", "wb");
-	fp6 = fopen("My_param/h_3.param", "wb");
-	fp7 = fopen("My_param/h_4.param", "wb");
-	fp8 = fopen("My_param/h_5.param", "wb");
-	fp9 = fopen("My_param/msk_key.param", "wb"); 
 
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 	element_init_G1(bb_param->g, bb_param->pairing);
@@ -221,42 +248,62 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 
 	paring_test(bb_param);
 
-	element_to_bytes(buf, bb_param->g);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
+	BB_Setup_File_Controller(bb_param->g, "My_param/g.param");
+	BB_Setup_File_Controller(bb_param->g_1, "My_param/g_1.param");
+	BB_Setup_File_Controller(bb_param->g_2, "My_param/g_2.param");
+	BB_Setup_File_Controller(bb_param->h_1, "My_param/h_1.param");
+	BB_Setup_File_Controller(bb_param->h_2, "My_param/h_2.param");
+	BB_Setup_File_Controller(bb_param->h_3, "My_param/h_3.param");
+	BB_Setup_File_Controller(bb_param->h_4, "My_param/h_4.param");
+	BB_Setup_File_Controller(bb_param->h_5, "My_param/h_5.param");
+	BB_Setup_File_Controller(bb_param->msk_key, "My_param/msk_key.param");
 
-	element_to_bytes(buf, bb_param->g_1);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
+	// fp1 = fopen("My_param/g.param", "wb");
+	// fp2 = fopen("My_param/g_1.param", "wb");
+	// fp3 = fopen("My_param/g_2.param", "wb");
+	// fp4 = fopen("My_param/h_1.param", "wb");
+	// fp5 = fopen("My_param/h_2.param", "wb");
+	// fp6 = fopen("My_param/h_3.param", "wb");
+	// fp7 = fopen("My_param/h_4.param", "wb");
+	// fp8 = fopen("My_param/h_5.param", "wb");
+	// fp9 = fopen("My_param/msk_key.param", "wb"); 
 
-	element_to_bytes(buf, bb_param->g_2);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp3); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->g);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0] = '\0';
 
-	element_to_bytes(buf, bb_param->h_1);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp4); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->g_1);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0] = '\0';
 
-	element_to_bytes(buf, bb_param->h_2);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp5); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->g_2);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp3); buf[0] = '\0';
 
-	element_to_bytes(buf, bb_param->h_3);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp6); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->h_1);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp4); buf[0] = '\0';
 
-	element_to_bytes(buf, bb_param->h_4);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp7); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->h_2);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp5); buf[0] = '\0';
 
-	element_to_bytes(buf, bb_param->h_5);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp8); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->h_3);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp6); buf[0] = '\0';
+
+	// element_to_bytes(buf, bb_param->h_4);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp7); buf[0] = '\0';
+
+	// element_to_bytes(buf, bb_param->h_5);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp8); buf[0] = '\0';
 	
-	element_to_bytes(buf, bb_param->msk_key);
-	fwrite(buf, sizeof(char), (int)strlen(buf), fp9); buf[0] = '\0';
+	// element_to_bytes(buf, bb_param->msk_key);
+	// fwrite(buf, sizeof(char), (int)strlen(buf), fp9); buf[0] = '\0';
 
-	fclose(fp1);
-	fclose(fp2);
-	fclose(fp3);
-	fclose(fp4);
-	fclose(fp5);
-	fclose(fp6);
-	fclose(fp7);
-	fclose(fp8);
-	fclose(fp9);
+	// fclose(fp1);
+	// fclose(fp2);
+	// fclose(fp3);
+	// fclose(fp4);
+	// fclose(fp5);
+	// fclose(fp6);
+	// fclose(fp7);
+	// fclose(fp8);
+	// fclose(fp9);
 	element_clear(bb_param->g);
 	element_clear(bb_param->g_1);
 	element_clear(bb_param->g_2);

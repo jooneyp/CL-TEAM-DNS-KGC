@@ -6,6 +6,7 @@ gmp, pbc 라이브러리 설치
 컴파일
 //KGC
 gcc -o BB_KGC_Setup sha2.c BB_KGC_Setup.c -lgmp -lpbc
+mkdir new_key_level_1
 gcc -o BB_KGC_Keygen sha2.c BB_KGC_Keygen.c -lgmp -lpbc
 
 //DNS
