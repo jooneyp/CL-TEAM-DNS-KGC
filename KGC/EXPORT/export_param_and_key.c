@@ -20,12 +20,12 @@ int main()
 	int retval;
 	int sock;
 	int i;
-	int count=1;
+	int count = 1;
 	struct sockaddr_in serveraddr;
 
 	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
 
-	FILE *fp1,*fp2,*fp3,*fp4,*fp5,*fp6,*fp7,*fp8,*fp9,*fp10,*fp11,*fp12,*fp13,*fp14;
+	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9, *fp10, *fp11, *fp12, *fp13, *fp14;
 
 	if((fp1=fopen(filename[1],"rb"))!=NULL)count++;
 	if((fp2=fopen(filename[2],"rb"))!=NULL)count++;
@@ -41,6 +41,8 @@ int main()
 	if((fp12=fopen(filename[12],"rb"))!=NULL)count++;
 	if((fp13=fopen(filename[13],"rb"))!=NULL)count++;
 	if((fp14=fopen(filename[14],"rb"))!=NULL)count++;
+
+	while 
 	//순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
@@ -98,7 +100,5 @@ int main()
 		close(sock);
 		buf[0]='\0';	
 	}
-
- 
 	return 0;
 }

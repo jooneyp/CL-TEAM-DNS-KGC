@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <string.h>
 #include <gmp.h>
 #include <pbc/pbc.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #include "BB04.h"
 #include "sha2.h"
 
@@ -14,6 +19,13 @@
 #define MAX_INPUT 1024
 #define MAX_ID_len 100
 
+#define BUFSIZE 4096
+
+void err_quit(char *msg) {
+	fputs(msg, stderr);
+	fputc('\n', stderr);
+	exit(1);
+}
 
 // 페어링 생성을 위한 파라미터 선언
 static const char *aparam =
@@ -34,9 +46,8 @@ void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 	printf("Input domain name: %s\n", Input_ID);
 	printf("Input domain name len: %d\n", Input_ID_len);
 
-
 	BB_param_import(bb_param); // 구조체에 파라미터 및 키 등록
-	BB_KeyGen_level_1(ID, &bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
+	BB_KeyGen_level_1(ID, bb_param); // 입력 받은 아이디에 대해 1 level의 키 생성
 }
 
 void BB_Hash_1(unsigned char *str, element_t H_1)
@@ -118,6 +129,11 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 
 	fp1 = fopen("new_key_level_1/sk_1.key", "wb");
 	fp2 = fopen("new_key_level_1/sk_2.key", "wb");
+
+	if (fp1 == NULL || fp2 == NULL) {
+		printf("check 'new_key_level_1' folder exist!\n");
+		exit(-1);
+	}
 
 	element_init_G1(bb_param->sk_1, bb_param->pairing);
 	element_init_G1(bb_param->sk_2, bb_param->pairing);
@@ -282,6 +298,10 @@ int main(int argc, char **argv)
 				break;
 			case 'e' :
 				printf("export\n");
+				if(argc == 3)
+					Export(argv[2], argv[3]);
+				else
+					printf("Usage : %s <Target IP> <Domain Name>\n", argv[1]);
 				break;
 			case 'i' :
 				printf("import\n");
@@ -295,3 +315,55 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+int Export(char *TargetIP, char *domainName)
+{
+	int retval;
+	int sock;
+	struct sockaddr_in serveraddr;
+ 
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if(sock == -1)
+		err_quit("socket() error");
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_port = htons(9000);
+	serveraddr.sin_addr.s_addr = htonl(TargetIP);
+	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
+	if(retval == -1)
+		err_quit("connect() error");
+	
+	retval = write(sock, domainName, sizeof(domainName));
+	if(retval == -1)
+		err_quit("write() error");
+ 
+	fseek(fp, 0, SEEK_END);
+	int totalbytes = ftell(fp);
+ 
+	retval = write(sock, (char *)&totalbytes, sizeof(totalbytes));
+	if(retval == -1)
+		err_quit("write() error");
+ 
+	char buf[BUFSIZE];
+	int numread;
+	int numtotal = 0;
+
+	while(1) {
+		numread = fread(buf, 1, BUFSIZE, domainName);
+		if(numread > 0) {
+			retval = write(sock, buf, numread);
+			if(retval == -1)
+				err_quit("write() error!");
+			numtotal += numread;
+		}
+		else if(numread == 0 && numtotal == totalbytes) {
+			printf("file trans complete : %d bytes\n", numtotal);
+			break;
+		}
+		else {
+			err_quit("file I/O error");
+		}
+	}
+	fclose(fp);
+	close(sock);
+ 
+	return 0;
+}
