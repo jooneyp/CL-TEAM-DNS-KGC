@@ -9,6 +9,12 @@
 // 7. named restart
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "BB_Setup_Keygen.h"
 
 #define BUF_SIZE 100
@@ -52,7 +58,6 @@ int main(int argc, char **argv) {
 }
 
 void open_socket() {
-
 	int serv_sock, clnt_sock;
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz;
