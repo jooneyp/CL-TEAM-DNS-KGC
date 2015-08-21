@@ -326,7 +326,7 @@ int Export(char *TargetIP, char *domainName)
 		err_quit("socket() error");
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(9000);
-	serveraddr.sin_addr.s_addr = htonl(TargetIP);
+	serveraddr.sin_addr.s_addr = htonl(atoi(TargetIP));
 	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
 	if(retval == -1)
 		err_quit("connect() error");
