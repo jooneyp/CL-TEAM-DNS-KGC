@@ -95,17 +95,19 @@ void * handle_clnt(void * arg)
 {
 	BB_SYS_PARAM bb_param;
 	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
-	int clnt_sock=*((int*)arg);
+	int clnt_sock = *((int*)arg);
 	int i=0;
+	int retval;
 	char URL[BUF_SIZE];
 	char * IP;
 	char FILE[10000];
+	FILE *fp;
 	
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
 	BB_Keygen(URL, &bb_param);
 	while ((fp = fopen(filename[i], "rb")) != NULL ) {
-		retval = write(sock, filename[i], sizeof(filename[i]));
+		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
 	
 		if(retval == -1)
 			err_quit("write() error1");
@@ -113,11 +115,11 @@ void * handle_clnt(void * arg)
 		fseek(fp, 0, SEEK_END);
 		int totalbytes = ftell(fp);
  
-		retval = write(sock, (char *)&totalbytes, sizeof(totalbytes));
+		retval = write(clnt_sock, (char *)&totalbytes, sizeof(totalbytes));
 		if(retval == -1)
 			err_quit("write() error2");
  
-		char buf[BUFSIZE];
+		char buf[BUF_SIZE];
 		int numread;
 		int numtotal = 0;
  
@@ -125,7 +127,7 @@ void * handle_clnt(void * arg)
 		while(1) {
 			numread = fread(buf, 1, BUFSIZE, fp);
 			if(numread > 0) {
-				retval = write(sock, buf, numread);
+				retval = write(clnt_sock, buf, numread);
 				if(retval == -1)
 					err_quit("write() error!");
 				numtotal += numread;
