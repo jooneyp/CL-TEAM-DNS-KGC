@@ -17,13 +17,13 @@
 void * handle_clnt(void * arg);
 void send_msg(char * msg, int len);
 void error_handling(char * msg);
+void open_socket();
 
 int clnt_cnt=0;
 int clnt_socks[MAX_CLNT];
 pthread_mutex_t mutx;
 
-
-int main(int argv, char **argv) {
+int main(int argv, char **argc) {
 	BB_SYS_PARAM bb_param;
 	int param_opt;
 
@@ -52,8 +52,13 @@ int main(int argv, char **argv) {
 }
 
 void open_socket() {
+
+	int serv_sock, clnt_sock;
+	struct sockaddr_in serv_adr, clnt_adr;
+	int clnt_adr_sz;
+	pthread_t t_id;
 	pthread_mutex_init(&mutx, NULL);
-	serv_sock=socket(PF_INET, SOCK_STREAM, 0);
+	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family=AF_INET; 
@@ -68,10 +73,10 @@ void open_socket() {
 	while(1)
 	{
 		clnt_adr_sz=sizeof(clnt_adr);
-		clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr,&clnt_adr_sz);
+		clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
 		
 		pthread_mutex_lock(&mutx);
-		clnt_socks[clnt_cnt++]=clnt_sock;
+		clnt_socks[clnt_cnt++] = clnt_sock;
 		pthread_mutex_unlock(&mutx);
 	
 		pthread_create(&t_id, NULL, handle_clnt, (void*)&clnt_sock);
@@ -91,7 +96,7 @@ void * handle_clnt(void * arg)
 	char * IP;
 	char FILE[10000];
 	
-	read(clnt_sock, URL, sizeof(URL) // 들어오는 URL과 IP를 URL에 받는다.
+	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
 	BB_Keygen(URL, &bb_param);
 	while ((fp = fopen(filename[i], "rb")) != NULL ) {
