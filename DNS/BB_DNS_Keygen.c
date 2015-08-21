@@ -71,7 +71,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	FILE *fp0, *fp1,*fp2,*fp3,*fp4,*fp5,*fp6,*fp7,*fp8;
 	unsigned char buf[MAX_INPUT];
 
-	printf("\n%s\n", "BB_param_import Start!////////////////");
+	printf("\n%s\n", "BB_param_import Start");
 
 	fp1=fopen("My_param/g.param","rb");
 	fp2=fopen("My_param/g_1.param","rb");
@@ -83,12 +83,10 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	fp8=fopen("My_param/h_5.param","rb");
 
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
-	if((fp0=fopen("My_param/msk_key.param","rb"))!=NULL)
-	{
-	element_init_G1(bb_param->msk_key, bb_param->pairing);
-	fread(buf,sizeof(char),129,fp0);
-	element_from_bytes(bb_param->msk_key,buf); buf[0]='\0';
-   // element_printf("bb_param->msk_key : %B\n", bb_param->msk_key);
+	if(( fp0 = fopen("My_param/msk_key.param","rb")) != NULL) {
+		element_init_G1(bb_param->msk_key, bb_param->pairing);
+		fread(buf,sizeof(char),129,fp0);
+		element_from_bytes(bb_param->msk_key,buf); buf[0]='\0';
 	}
 
 	element_init_G1(bb_param->g, bb_param->pairing);

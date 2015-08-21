@@ -5,9 +5,8 @@ gmp, pbc 라이브러리 설치
 
 컴파일
 //KGC
-gcc -o BB_KGC_Setup sha2.c BB_KGC_Setup.c -lgmp -lpbc
+gcc -o BB_KGC sha2.c BB_KGC.c -lgmp -lpbc
 mkdir new_key_level_1
-gcc -o BB_KGC_Keygen sha2.c BB_KGC_Keygen.c -lgmp -lpbc
 
 //DNS
 gcc -o BB_DNS_Keygen sha2.c BB_DNS_Keygen.c -lgmp -lpbc
@@ -22,9 +21,7 @@ gcc -o export_param_and_key export_param_and_key.c
 
 -KGC 키생성 
 
-1. BB_KGC_Setup 실행하면 new_param 에 8개의 파라미터와 1개의 마스터키 생성됨
-2. 9개의 파라미터와 마스터키 모두를 My_param폴더에 이동
-
+1. BB_KGC -s 실행하면 My_param 에 8개의 파라미터와 1개의 마스터키 생성됨
 
 -DNS가 KGC로 부터 키발급
 
