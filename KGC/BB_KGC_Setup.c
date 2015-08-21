@@ -335,9 +335,6 @@ int Export(char *TargetIP, char *domainName)
 	if(retval == -1)
 		err_quit("write() error");
  
-	fseek(fp, 0, SEEK_END);
-	int totalbytes = ftell(fp);
- 
 	retval = write(sock, (char *)&totalbytes, sizeof(totalbytes));
 	if(retval == -1)
 		err_quit("write() error");
