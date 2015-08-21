@@ -23,7 +23,7 @@ int clnt_cnt=0;
 int clnt_socks[MAX_CLNT];
 pthread_mutex_t mutx;
 
-int main(int argv, char **argc) {
+int main(int argc, char **argv) {
 	BB_SYS_PARAM bb_param;
 	int param_opt;
 
