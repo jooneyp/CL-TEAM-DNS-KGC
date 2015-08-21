@@ -125,7 +125,7 @@ void * handle_clnt(void * arg)
  
 		rewind(fp);
 		while(1) {
-			numread = fread(buf, 1, BUFSIZE, fp);
+			numread = fread(buf, 1, BUF_SIZE, fp);
 			if(numread > 0) {
 				retval = write(clnt_sock, buf, numread);
 				if(retval == -1)
