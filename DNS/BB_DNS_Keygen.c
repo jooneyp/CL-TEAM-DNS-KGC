@@ -64,28 +64,33 @@ int element_len(element_t t)
 	return n;
 }
 
+void BB_import_File_Controller(element_t e, char *filename) {
+	FILE *fp;
+	unsigned char buf[MAX_INPUT];
+
+	if(fp = fopen(filename, "rb") == NULL){
+		printf("ERROR : check folder created!\n");
+	}
+
+	fread(buf, sizeof(char), 129, fp);
+	element_from_bytes(e, buf);
+
+	fclose(fp);	
+}
+
 
 //디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
 int BB_param_import(BB_SYS_PARAM *bb_param)
 {
-	FILE *fp0, *fp1,*fp2,*fp3,*fp4,*fp5,*fp6,*fp7,*fp8;
+	FILE *fp0;
 	unsigned char buf[MAX_INPUT];
 
 	printf("\n%s\n", "BB_param_import Start");
 
-	fp1=fopen("My_param/g.param","rb");
-	fp2=fopen("My_param/g_1.param","rb");
-	fp3=fopen("My_param/g_2.param","rb");
-	fp4=fopen("My_param/h_1.param","rb");
-	fp5=fopen("My_param/h_2.param","rb");
-	fp6=fopen("My_param/h_3.param","rb");
-	fp7=fopen("My_param/h_4.param","rb");
-	fp8=fopen("My_param/h_5.param","rb");
-
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 	if(( fp0 = fopen("My_param/msk_key.param","rb")) != NULL) {
 		element_init_G1(bb_param->msk_key, bb_param->pairing);
-		fread(buf,sizeof(char),129,fp0);
+		fread(buf, sizeof(char), 129, fp0);
 		element_from_bytes(bb_param->msk_key,buf); buf[0]='\0';
 	}
 
@@ -98,49 +103,17 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	element_init_G1(bb_param->h_4, bb_param->pairing);
 	element_init_G1(bb_param->h_5, bb_param->pairing);
 
-	fread(buf,sizeof(char),129,fp1);
-	element_from_bytes(bb_param->g,buf); buf[0]='\0';
-    // element_printf("\nbb_param->g : %B\n", bb_param->g);
-
-	fread(buf,sizeof(char),129,fp2);
-	element_from_bytes(bb_param->g_1,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->g_1 : %B\n", bb_param->g_1);
-
-	fread(buf,sizeof(char),129,fp3);
-	element_from_bytes(bb_param->g_2,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->g_2 : %B\n", bb_param->g_2);
-
-	fread(buf,sizeof(char),129,fp4);
-	element_from_bytes(bb_param->h_1,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->h_1 : %B\n", bb_param->h_1);
-
-	fread(buf,sizeof(char),129,fp5);
-	element_from_bytes(bb_param->h_2,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->h_2 : %B\n", bb_param->h_2);
-
-	fread(buf,sizeof(char),129,fp6);
-	element_from_bytes(bb_param->h_3,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->h_3 : %B\n", bb_param->h_3);
-
-	fread(buf,sizeof(char),129,fp7);
-	element_from_bytes(bb_param->h_4,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->h_4 : %B\n", bb_param->h_4);
-
-	fread(buf,sizeof(char),129,fp8);
-	element_from_bytes(bb_param->h_5,buf);  buf[0]='\0';
-    // element_printf("\nbb_param->h_5 : %B\n", bb_param->h_5);
+	BB_import_File_Controller(bb_param->g, "My_param/g.param");
+	BB_import_File_Controller(bb_param->g_1, "My_param/g_1.param");
+	BB_import_File_Controller(bb_param->g_2, "My_param/g_2.param");
+	BB_import_File_Controller(bb_param->h_1, "My_param/h_1.param");
+	BB_import_File_Controller(bb_param->h_2, "My_param/h_2.param");
+	BB_import_File_Controller(bb_param->h_3, "My_param/h_3.param");
+	BB_import_File_Controller(bb_param->h_4, "My_param/h_4.param");
+	BB_import_File_Controller(bb_param->h_5, "My_param/h_5.param");
 
     if((paring_test(bb_param))==1)
     	return 1;
-
-	fclose(fp1);
-	fclose(fp2);
-	fclose(fp3);
-	fclose(fp4);
-	fclose(fp5);
-	fclose(fp6);
-	fclose(fp7);
-	fclose(fp8);
 
 	printf("%s\n", "BB_param_import end!////////////////");
 
@@ -295,7 +268,7 @@ int paring_test(BB_SYS_PARAM *bb_param)
 int BB_KeyGen_level_n(unsigned char *ID, BB_SYS_PARAM *bb_param, int my_key_level)
 {
 
-	FILE *fp0,*fp1,*fp2,*fp3,*fp4,*fp5,*fp6;
+	FILE *fp0, *fp1, *fp2, *fp3, *fp4, *fp5, *fp6;
 	unsigned char *fname;
 	unsigned char buf[MAX_INPUT];
 	element_t r;
@@ -305,13 +278,17 @@ int BB_KeyGen_level_n(unsigned char *ID, BB_SYS_PARAM *bb_param, int my_key_leve
 
 	printf("\n%s\n", "BB_KeyGen_level_n Start!////////////////");
 
-	if (my_key_level==1) fname="new_key/sk_3.key";
-	if (my_key_level==2) fname="new_key/sk_4.key";
-	if (my_key_level==3) fname="new_key/sk_5.key";
-	if (my_key_level==4) fname="new_key/sk_6.key";
+	if (my_key_level == 1) 
+		fname = "new_key/sk_3.key";
+	if (my_key_level == 2) 
+		fname = "new_key/sk_4.key";
+	if (my_key_level == 3) 
+		fname = "new_key/sk_5.key";
+	if (my_key_level == 4) 
+		fname = "new_key/sk_6.key";
 
 	
-	fp0=fopen(fname,"wb");
+	fp0 = fopen(fname, "wb");
 
 	element_init_Zr(r, bb_param->pairing);
 	element_init_G1(temp, bb_param->pairing);
@@ -324,67 +301,63 @@ int BB_KeyGen_level_n(unsigned char *ID, BB_SYS_PARAM *bb_param, int my_key_leve
 	if (my_key_level==1)//자기 래밸이 1인 경우 
 	{
 		element_init_G1(bb_param->sk_3, bb_param->pairing);
-	do{
-	element_random(r);
-	element_pow_zn(temp,h_ID,r);
-	element_mul(bb_param->sk_0, bb_param->sk_1, temp);
-	element_pow_zn(bb_param->sk_3, bb_param->g, r);
-    }while((element_len(bb_param->sk_0)<128)||(element_len(bb_param->sk_3)<128));
+	do {
+		element_random(r);
+		element_pow_zn(temp, h_ID,r);
+		element_mul(bb_param->sk_0, bb_param->sk_1, temp);
+		element_pow_zn(bb_param->sk_3, bb_param->g, r);
+    } while( (element_len(bb_param->sk_0) < 128) || (element_len(bb_param->sk_3) < 128) );
     
-    fp1=fopen("new_key/sk_1.key","wb");
-	fp2=fopen("new_key/sk_2.key","wb");
-	fp3=fopen("new_key/sk_3.key","wb");
+    fp1 = fopen("new_key/sk_1.key", "wb");
+	fp2 = fopen("new_key/sk_2.key", "wb");
+	fp3 = fopen("new_key/sk_3.key", "wb");
 
-    element_to_bytes(buf,bb_param->sk_0);
+    element_to_bytes(buf, bb_param->sk_0);
 	fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
 	//element_printf("\nbb_param->sk_1(new key) : %B\n", bb_param->sk_0);
-	element_to_bytes(buf,bb_param->sk_2);
+	element_to_bytes(buf, bb_param->sk_2);
 	fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
 	//element_printf("\nbb_param->sk_2(new key) : %B\n", bb_param->sk_2);
-	element_to_bytes(buf,bb_param->sk_3);
+	element_to_bytes(buf, bb_param->sk_3);
 	fwrite(buf,sizeof(char),(int)strlen(buf),fp3);buf[0]='\0';
    // element_printf("\nbb_param->sk_3(new key) : %B\n", bb_param->sk_3);
 	printf("%s\n", "new key is 2 level(3 keys)");
 	}
 	
-	if (my_key_level==2)//자기 래밸이 2인 경우 
+	if (my_key_level == 2)//자기 래밸이 2인 경우 
 	{
-		element_init_G1(bb_param->sk_4, bb_param->pairing);		
-	do{
-	element_random(r);
-	element_pow_zn(temp,h_ID,r);
-	element_mul(bb_param->sk_0, bb_param->sk_1, temp);
-	element_pow_zn(bb_param->sk_4, bb_param->g, r);
-    }while((element_len(bb_param->sk_0)<128)||(element_len(bb_param->sk_4)<128));
+			element_init_G1(bb_param->sk_4, bb_param->pairing);		
+		do {
+			element_random(r);
+			element_pow_zn(temp, h_ID, r);
+			element_mul(bb_param->sk_0, bb_param->sk_1, temp);
+			element_pow_zn(bb_param->sk_4, bb_param->g, r);
+	    } while ((element_len(bb_param->sk_0) < 128) || (element_len(bb_param->sk_4) < 128));
 
-    fp1=fopen("new_key/sk_1.key","wb");
-	fp2=fopen("new_key/sk_2.key","wb");
-	fp3=fopen("new_key/sk_3.key","wb");
-	fp4=fopen("new_key/sk_4.key","wb");
+		    fp1 = fopen("new_key/sk_1.key","wb");
+			fp2 = fopen("new_key/sk_2.key","wb");
+			fp3 = fopen("new_key/sk_3.key","wb");
+			fp4 = fopen("new_key/sk_4.key","wb");
 
-    element_to_bytes(buf,bb_param->sk_0);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
-	//element_printf("\nbb_param->sk_1(new key) : %B\n", bb_param->sk_0);
-	element_to_bytes(buf,bb_param->sk_2);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
-	//element_printf("\nbb_param->sk_2(new key) : %B\n", bb_param->sk_2);
-	element_to_bytes(buf,bb_param->sk_3);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp3);buf[0]='\0';
-    //element_printf("\nbb_param->sk_3(new key) : %B\n", bb_param->sk_3);
-	element_to_bytes(buf,bb_param->sk_4);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp4);buf[0]='\0';
-    // element_printf("\nbb_param->sk_4(new key) : %B\n", bb_param->sk_4);
-    printf("%s\n", "new key is 3 level(4 keys)");
+		    element_to_bytes(buf, bb_param->sk_0);
+			fwrite(buf, sizeof(char), (int)strlen(buf), fp1); buf[0]='\0';
+			element_to_bytes(buf, bb_param->sk_2);
+			fwrite(buf, sizeof(char), (int)strlen(buf), fp2); buf[0]='\0';
+			element_to_bytes(buf, bb_param->sk_3);
+			fwrite(buf, sizeof(char), (int)strlen(buf), fp3); buf[0]='\0';
+			element_to_bytes(buf, bb_param->sk_4);
+			fwrite(buf, sizeof(char), (int)strlen(buf), fp4); buf[0]='\0';
+		    printf("%s\n", "new key is 3 level(4 keys)");
 	}
 	
 	if (my_key_level==3)//자기 래밸이 3인 경우 
 	{
 		element_init_G1(bb_param->sk_5, bb_param->pairing);		
 	do{
-	element_random(r);
-	element_pow_zn(temp,h_ID,r);
-	element_mul(bb_param->sk_0, bb_param->sk_1, temp);
-	element_pow_zn(bb_param->sk_5, bb_param->g, r);
+		element_random(r);
+		element_pow_zn(temp,h_ID,r);
+		element_mul(bb_param->sk_0, bb_param->sk_1, temp);
+		element_pow_zn(bb_param->sk_5, bb_param->g, r);
     }while((element_len(bb_param->sk_0)<128)||(element_len(bb_param->sk_5)<128));
 
     fp1=fopen("new_key/sk_1.key","wb");
@@ -413,43 +386,38 @@ int BB_KeyGen_level_n(unsigned char *ID, BB_SYS_PARAM *bb_param, int my_key_leve
 	
 	if (my_key_level==4)//자기 래밸이 4인 경우 
 	{
-		element_init_G1(bb_param->sk_6, bb_param->pairing);	
-	do{
-	element_random(r);
-	element_pow_zn(temp,h_ID,r);
-	element_mul(bb_param->sk_0, bb_param->sk_1, temp);
-	element_pow_zn(bb_param->sk_6, bb_param->g, r);
-    }while((element_len(bb_param->sk_0)<128)||(element_len(bb_param->sk_6)<128));
+			element_init_G1(bb_param->sk_6, bb_param->pairing);	
+		do {
+		element_random(r);
+		element_pow_zn(temp,h_ID,r);
+		element_mul(bb_param->sk_0, bb_param->sk_1, temp);
+		element_pow_zn(bb_param->sk_6, bb_param->g, r);
+	    } while ((element_len(bb_param->sk_0)<128) || (element_len(bb_param->sk_6)<128));
 
-    fp1=fopen("new_key/sk_1.key","wb");
-	fp2=fopen("new_key/sk_2.key","wb");
-	fp3=fopen("new_key/sk_3.key","wb");
-	fp4=fopen("new_key/sk_4.key","wb");
-	fp5=fopen("new_key/sk_5.key","wb");
-	fp6=fopen("new_key/sk_6.key","wb");
+	    fp1=fopen("new_key/sk_1.key","wb");
+		fp2=fopen("new_key/sk_2.key","wb");
+		fp3=fopen("new_key/sk_3.key","wb");
+		fp4=fopen("new_key/sk_4.key","wb");
+		fp5=fopen("new_key/sk_5.key","wb");
+		fp6=fopen("new_key/sk_6.key","wb");
 
-    element_to_bytes(buf,bb_param->sk_0);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
-	// element_printf("\nbb_param->sk_1(new key) : %B\n", bb_param->sk_0);
-	element_to_bytes(buf,bb_param->sk_2);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
-	// element_printf("\nbb_param->sk_2(new key) : %B\n", bb_param->sk_2);
-	element_to_bytes(buf,bb_param->sk_3);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp3);buf[0]='\0';
-    // element_printf("\nbb_param->sk_3(new key) : %B\n", bb_param->sk_3);
-	element_to_bytes(buf,bb_param->sk_4);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp4);buf[0]='\0';
-    // element_printf("\nbb_param->sk_4(new key) : %B\n", bb_param->sk_4);
-	element_to_bytes(buf,bb_param->sk_5);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp5);buf[0]='\0';
-    // element_printf("\nbb_param->sk_5(new key) : %B\n", bb_param->sk_5);
-	element_to_bytes(buf,bb_param->sk_6);
-	fwrite(buf,sizeof(char),(int)strlen(buf),fp6);buf[0]='\0';
-    // element_printf("\nbb_param->sk_6(new key) : %B\n", bb_param->sk_6);
-    printf("%s\n", "new key is 5 level(6 keys)");
+	    element_to_bytes(buf,bb_param->sk_0);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp1);buf[0]='\0';
+		element_to_bytes(buf,bb_param->sk_2);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp2);buf[0]='\0';
+		element_to_bytes(buf,bb_param->sk_3);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp3);buf[0]='\0';
+		element_to_bytes(buf,bb_param->sk_4);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp4);buf[0]='\0';
+		element_to_bytes(buf,bb_param->sk_5);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp5);buf[0]='\0';
+		element_to_bytes(buf,bb_param->sk_6);
+		fwrite(buf,sizeof(char),(int)strlen(buf),fp6);buf[0]='\0';
+	    printf("%s\n", "new key is 5 level(6 keys)");
 	}
 
-	if (my_key_level==5)printf("%s\n","you can't generate key (you are in lowest level:5)" );//자기 래밸이 5인 경우, 래밸 5가 최대이므로 더 이상 생성하지 못함  
+	if (my_key_level == 5)
+		printf("%s\n","you can't generate key (you are in lowest level:5)" );//자기 래밸이 5인 경우, 래밸 5가 최대이므로 더 이상 생성하지 못함  
 
 	element_clear(r);
 	element_clear(temp);
@@ -463,7 +431,7 @@ int BB_KeyGen_level_n(unsigned char *ID, BB_SYS_PARAM *bb_param, int my_key_leve
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
 
 	int My_ID_len;
