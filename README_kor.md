@@ -5,8 +5,9 @@ gmp, pbc 라이브러리 설치
 
 컴파일
 //KGC
-gcc -o BB_KGC sha2.c BB_KGC.c -lgmp -lpbc
+gcc -o BB_KGC sha2.c BB_KGC.c -lgmp -lpbc -lpthread
 mkdir new_key_level_1
+mkdir My_param
 
 //DNS
 gcc -o BB_DNS_Keygen sha2.c BB_DNS_Keygen.c -lgmp -lpbc
@@ -48,3 +49,23 @@ gcc -o export_param_and_key export_param_and_key.c
 
 /// 시연할려문 IMPORT,EXPORT 코드에서 IP부분 바꿔야 할거같은데 그건 아직 안 건들였어
 /// 참고로 IMPORT,EXPORT는 KGC,DNS에 상관없이 똑같은거 써도돼
+
+
+
+
+
+
+KGC에서 해야할 일
+1. My_param에 초기 마스터키와 파라미터 생성 (My_param)
+2. DNS에서 키 발급 요청이 들어올때를 대비한 Daemon Server역할
+3. DNS에서 키 발급 요청이 들어오면 URL, IP를 받고 dns configure
+4. DNS에서 키 발급 요청이 들어오면 URL으로 Keygen 실행(new_level_key_1)후 DNS에게 8개 파라미터(My_param)와 생성된 키를 전송
+
+--> KGC_Setup(), KGC_Daemon() { KGC_NamedConf(char *param), KGC_Keygen(char *URL), KGC_KeySend() }
+
+DNS에서 해야할 일
+1. KGC or 상위DNS 에게 자신의 URL, IP를 전송하고 키 발급 받기. (파라미터는 My_param, Key는 My_sk에 넣기)
+2. 하위 DNS가 키 요청할때를 대비한 Daemon Server역할
+3. 하위 DNS에서 키 발급 요청이 들어오면 URL으로 Keygen 실행(new_key)후 하위 DNS에게 8개의 파라미터와 
+
+--> DNS_KeyRequest(char *param), DNS_KeyReceive(), DNS_Daemon() { DNS_Keygen(char *URL) }

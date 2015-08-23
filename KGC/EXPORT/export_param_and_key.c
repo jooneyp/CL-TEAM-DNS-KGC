@@ -27,23 +27,23 @@ int main()
 
 	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9, *fp10, *fp11, *fp12, *fp13, *fp14;
 
-	if((fp1=fopen(filename[1],"rb"))!=NULL)count++;
-	if((fp2=fopen(filename[2],"rb"))!=NULL)count++;
-	if((fp3=fopen(filename[3],"rb"))!=NULL)count++;
-	if((fp4=fopen(filename[4],"rb"))!=NULL)count++;
-	if((fp5=fopen(filename[5],"rb"))!=NULL)count++;
-	if((fp6=fopen(filename[6],"rb"))!=NULL)count++;
-	if((fp7=fopen(filename[7],"rb"))!=NULL)count++;
-	if((fp8=fopen(filename[8],"rb"))!=NULL)count++;
-	if((fp9=fopen(filename[9],"rb"))!=NULL)count++;
-	if((fp10=fopen(filename[10],"rb"))!=NULL)count++;
-	if((fp11=fopen(filename[11],"rb"))!=NULL)count++;
-	if((fp12=fopen(filename[12],"rb"))!=NULL)count++;
-	if((fp13=fopen(filename[13],"rb"))!=NULL)count++;
-	if((fp14=fopen(filename[14],"rb"))!=NULL)count++;
+	if((fp1 = fopen(filename[1], "rb")) != NULL) count++;
+	if((fp2 = fopen(filename[2], "rb")) != NULL) count++;
+	if((fp3 = fopen(filename[3], "rb")) != NULL) count++;
+	if((fp4 = fopen(filename[4], "rb")) != NULL) count++;
+	if((fp5 = fopen(filename[5], "rb")) != NULL) count++;
+	if((fp6 = fopen(filename[6], "rb")) != NULL) count++;
+	if((fp7 = fopen(filename[7], "rb")) != NULL) count++;
+	if((fp8 = fopen(filename[8], "rb")) != NULL) count++;
+	if((fp9 = fopen(filename[9], "rb")) != NULL) count++;
+	if((fp10 = fopen(filename[10], "rb")) != NULL) count++;
+	if((fp11 = fopen(filename[11], "rb")) != NULL) count++;
+	if((fp12 = fopen(filename[12], "rb")) != NULL) count++;
+	if((fp13 = fopen(filename[13], "rb")) != NULL) count++;
+	if((fp14 = fopen(filename[14], "rb")) != NULL) count++;
 
 	while 
-	//순차적으로 있는 파마미터 및 키를 모두 전송 
+	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
 		sock = socket(PF_INET, SOCK_STREAM, 0);

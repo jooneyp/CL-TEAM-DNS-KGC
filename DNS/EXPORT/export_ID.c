@@ -40,7 +40,7 @@ int main()
 	char filename[256];
 	memset(filename, 0, sizeof(filename));
 	strcpy(filename, "Input_Domain_name.txt");
-	printf("%s",filename);
+	printf("%s", filename);
 	
 	retval = write(sock, filename, sizeof(filename));
 	if(retval == -1)
