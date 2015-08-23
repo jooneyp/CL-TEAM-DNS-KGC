@@ -111,14 +111,14 @@ void * handle_clnt(void * arg)
 		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
 	
 		if(retval == -1)
-			err_quit("write() error1");
+			error_handling("write() error1");
  
 		fseek(fp, 0, SEEK_END);
 		int totalbytes = ftell(fp);
  
 		retval = write(clnt_sock, (char *)&totalbytes, sizeof(totalbytes));
 		if(retval == -1)
-			err_quit("write() error2");
+			error_handling("write() error2");
  
 		char buf[BUF_SIZE];
 		int numread;
@@ -130,7 +130,7 @@ void * handle_clnt(void * arg)
 			if(numread > 0) {
 				retval = write(clnt_sock, buf, numread);
 				if(retval == -1)
-					err_quit("write() error!");
+					error_handling("write() error!");
 				numtotal += numread;
 			}
 			else if(numread == 0 && numtotal == totalbytes) {
@@ -138,7 +138,7 @@ void * handle_clnt(void * arg)
 				break;
 			}
 			else {
-				err_quit("file I/O error");
+				error_handling("file I/O error");
 			}
 		}
 		fclose(fp);
