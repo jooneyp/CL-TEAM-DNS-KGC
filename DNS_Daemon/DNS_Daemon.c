@@ -12,9 +12,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <pthread.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include "BB_Setup_Keygen.h"
 
 #define BUF_SIZE 100
@@ -94,14 +96,13 @@ void open_socket() {
 void * handle_clnt(void * arg)
 {
 	BB_SYS_PARAM bb_param;
+	FILE *fp;
 	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
 	int clnt_sock = *((int*)arg);
 	int i=0;
 	int retval;
 	char URL[BUF_SIZE];
 	char * IP;
-	char FILE[10000];
-	FILE *fp;
 	
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
