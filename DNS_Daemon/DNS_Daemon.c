@@ -196,7 +196,7 @@ void send_param()   // send to all
 	{
 		sock = socket(PF_INET, SOCK_STREAM, 0);
 		if(sock == -1)
-			err_quit("socket() error");
+			error_handling("socket() error");
 		
 		serveraddr.sin_family = AF_INET;
 		serveraddr.sin_port = htons(5959);
@@ -204,24 +204,24 @@ void send_param()   // send to all
 		retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
 
 		if(retval == -1)
-			err_quit("connect() error");
+			error_handling("connect() error");
 
 			FILE *fp = fopen(filename[i], "rb");
 		if(fp == NULL) 
-			err_quit("fopen() error");
+			error_handling("fopen() error");
 	
 		printf("filename: %s\n",filename[i]);
 		retval = write(sock, filename[i], sizeof(filename[i]));
 	
 		if(retval == -1)
-			err_quit("write() error1");
+			error_handling("write() error1");
  
 		fseek(fp, 0, SEEK_END);
 		int totalbytes = ftell(fp);
  
 		retval = write(sock, (char *)&totalbytes, sizeof(totalbytes));
 		if(retval == -1)
-			err_quit("write() error2");
+			error_handling("write() error2");
  
 		char buf[BUF_SIZE];
 		int numread;
@@ -233,7 +233,7 @@ void send_param()   // send to all
 			if(numread > 0) {
 				retval = write(sock, buf, numread);
 				if(retval == -1)
-					err_quit("write() error!");
+					error_handling("write() error!");
 				numtotal += numread;
 			}
 			else if(numread == 0 && numtotal == totalbytes) {
@@ -241,7 +241,7 @@ void send_param()   // send to all
 				break;
 			}
 			else {
-				err_quit("file I/O error");
+				error_handling("file I/O error");
 			}
 		}
 		fclose(fp);
