@@ -51,7 +51,9 @@ void BB_import_File_Controller(element_t e, char *filename) {
 	FILE *fp;
 	unsigned char buf[MAX_INPUT];
 
-	fp = fopen(filename, "rb");
+	if(fp = fopen(filename, "rb") == NULL){
+		printf("ERROR : check folder created!\n");
+	}
 
 	fread(buf, sizeof(char), 129, fp);
 	element_from_bytes(e, buf);
@@ -118,7 +120,7 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	fp2 = fopen("new_key_level_1/sk_2.key", "wb");
 
 	if (fp1 == NULL || fp2 == NULL) {
-		printf("check 'new_key_level_1' folder exist!\n");
+		printf("ERROR : check 'new_key_level_1' folder exist\n");
 		exit(-1);
 	}
 
@@ -163,8 +165,10 @@ void BB_Setup_File_Controller(element_t e, char *filename) {
 	FILE *fp;
 	unsigned char buf[MAX_INPUT];
 
-	fp = fopen(filename, "wb");
-
+	if(fp = fopen(filename, "wb") == NULL) {
+		printf("ERROR : check folder created!\n");
+		exit(-1);
+	}
 	element_to_bytes(buf, e);
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp);
 
