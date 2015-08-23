@@ -51,7 +51,7 @@ void BB_import_File_Controller(element_t e, char *filename) {
 	FILE *fp;
 	unsigned char buf[MAX_INPUT];
 
-	if(fp = fopen(filename, "rb") == NULL){
+	if((fp = fopen(filename, "rb")) == NULL){
 		printf("ERROR : check folder created!\n");
 	}
 
@@ -165,7 +165,7 @@ void BB_Setup_File_Controller(element_t e, char *filename) {
 	FILE *fp;
 	unsigned char buf[MAX_INPUT];
 
-	if(fp = fopen(filename, "wb") == NULL) {
+	if((fp = fopen(filename, "wb")) == NULL) {
 		printf("ERROR : check folder created!\n");
 		exit(-1);
 	}

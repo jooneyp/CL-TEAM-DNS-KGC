@@ -191,7 +191,6 @@ void send_param()   // send to all
 	if((fp13 = fopen(filename[13], "rb")) != NULL) count++;
 	if((fp14 = fopen(filename[14], "rb")) != NULL) count++;
 
-	while 
 	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
@@ -224,13 +223,13 @@ void send_param()   // send to all
 		if(retval == -1)
 			err_quit("write() error2");
  
-		char buf[BUFSIZE];
+		char buf[BUF_SIZE];
 		int numread;
 		int numtotal = 0;
  
 		rewind(fp);
 		while(1) {
-			numread = fread(buf, 1, BUFSIZE, fp);
+			numread = fread(buf, 1, BUF_SIZE, fp);
 			if(numread > 0) {
 				retval = write(sock, buf, numread);
 				if(retval == -1)
@@ -249,7 +248,6 @@ void send_param()   // send to all
 		close(sock);
 		buf[0]='\0';	
 	}
-	return 0;
 }
 
 void error_handling(char * msg)

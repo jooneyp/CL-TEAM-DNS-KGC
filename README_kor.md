@@ -66,6 +66,13 @@ KGC에서 해야할 일
 DNS에서 해야할 일
 1. KGC or 상위DNS 에게 자신의 URL, IP를 전송하고 키 발급 받기. (파라미터는 My_param, Key는 My_sk에 넣기)
 2. 하위 DNS가 키 요청할때를 대비한 Daemon Server역할
-3. 하위 DNS에서 키 발급 요청이 들어오면 URL으로 Keygen 실행(new_key)후 하위 DNS에게 8개의 파라미터와 
+3. 하위 DNS에서 키 발급 요청이 들어오면 URL으로 Keygen 실행(new_key)후 하위 DNS에게 8개의 파라미터(My_param)와 new_key를 전송
 
 --> DNS_KeyRequest(char *param), DNS_KeyReceive(), DNS_Daemon() { DNS_Keygen(char *URL) }
+
+
+
+
+
+
+
