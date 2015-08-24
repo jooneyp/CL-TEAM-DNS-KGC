@@ -125,7 +125,7 @@ void * handle_clnt(void * arg)
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(sock == -1)
-		err_quit("socket() error");
+		error_handling("socket() error");
 	
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(5959);
@@ -133,7 +133,7 @@ void * handle_clnt(void * arg)
 	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
 
 	if(retval == -1)
-		err_quit("connect() error");
+		error_handling("connect() error");
 
 	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
 	while ((fp = fopen(filename, "rb")) != NULL ) {
