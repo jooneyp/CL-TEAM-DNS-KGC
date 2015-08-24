@@ -116,12 +116,12 @@ void * handle_clnt(void * arg)
 	};
 	char filename[256] = "My_param/";
 	int sock;
+	int clnt_sock = *((int*)arg);
 	int i=0;
 	int retval;
 	struct sockaddr_in serveraddr;
 
 	BB_Keygen(URL, &bb_param);
-	close(clnt_sock);
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(sock == -1)
@@ -172,6 +172,7 @@ void * handle_clnt(void * arg)
 			}
 		}
 		fclose(fp);
+		close(sock);
 		i++;
 		strncpy(filename, "My_param/", sizeof(filename) + sizeof("My_param/"));
 		strncat(filename, files[i], sizeof(filename) + sizeof(files[i]));
