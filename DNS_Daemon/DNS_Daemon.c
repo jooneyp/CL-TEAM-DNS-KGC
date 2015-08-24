@@ -4,6 +4,7 @@
 // 2. 소켓으로 URL / IP가 들어옴.
 // 3. URL을 이용하여 Keygen 실행. (new_key_level_1)
 // 4. My_param 8개 키와 앞서 생성된 키 (총 9개)를 상대에게 보냄.
+
 // 5. /etc/named.rfc~.conf 최하단에 설정내용 추가.
 // 6. /var/named/<url>.conf 파일 추가 후 설정내용 삽입.
 // 7. named restart
@@ -23,7 +24,6 @@
 #define MAX_CLNT 256
 
 void * handle_clnt(void * arg);
-void send_param();
 void error_handling(char * msg);
 void open_socket();
 
@@ -90,8 +90,8 @@ void open_socket() {
 		pthread_create(&t_id, NULL, handle_clnt, (void*)&clnt_sock);
 		pthread_detach(t_id);
 		printf("Connected client IP: %s \n", inet_ntoa(clnt_adr.sin_addr));
-		strcpy(clnt_IP, inet_ntoa(clnt_adr.sin_addr));
 	}
+
 	close(serv_sock);
 }
 
@@ -111,7 +111,10 @@ void * handle_clnt(void * arg)
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
 	BB_Keygen(URL, &bb_param);
+	printf("Received URL : %s\n", URL);
+	strcat("")
 	while ((fp = fopen(filename[i], "rb")) != NULL ) {
+		printf("File Opened : filename[%d]\n", i);
 		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
 	
 		if(retval == -1)
@@ -162,92 +165,6 @@ void * handle_clnt(void * arg)
 	pthread_mutex_unlock(&mutx);
 	close(clnt_sock);
 	return NULL;
-}
-
-void send_param()   // send to all
-{
-	int retval;
-	int sock;
-	int i;
-	int count = 1;
-	struct sockaddr_in serveraddr;
-
-	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
-
-	FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7, *fp8, *fp9, *fp10, *fp11, *fp12, *fp13, *fp14;
-
-	if((fp1 = fopen(filename[1], "rb")) != NULL) count++;
-	if((fp2 = fopen(filename[2], "rb")) != NULL) count++;
-	if((fp3 = fopen(filename[3], "rb")) != NULL) count++;
-	if((fp4 = fopen(filename[4], "rb")) != NULL) count++;
-	if((fp5 = fopen(filename[5], "rb")) != NULL) count++;
-	if((fp6 = fopen(filename[6], "rb")) != NULL) count++;
-	if((fp7 = fopen(filename[7], "rb")) != NULL) count++;
-	if((fp8 = fopen(filename[8], "rb")) != NULL) count++;
-	if((fp9 = fopen(filename[9], "rb")) != NULL) count++;
-	if((fp10 = fopen(filename[10], "rb")) != NULL) count++;
-	if((fp11 = fopen(filename[11], "rb")) != NULL) count++;
-	if((fp12 = fopen(filename[12], "rb")) != NULL) count++;
-	if((fp13 = fopen(filename[13], "rb")) != NULL) count++;
-	if((fp14 = fopen(filename[14], "rb")) != NULL) count++;
-
-	// 순차적으로 있는 파마미터 및 키를 모두 전송 
-	for (i = 0; i < count; i++)
-	{
-		sock = socket(PF_INET, SOCK_STREAM, 0);
-		if(sock == -1)
-			error_handling("socket() error");
-		
-		serveraddr.sin_family = AF_INET;
-		serveraddr.sin_port = htons(5959);
-		serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
-		retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
-
-		if(retval == -1)
-			error_handling("connect() error");
-
-			FILE *fp = fopen(filename[i], "rb");
-		if(fp == NULL) 
-			error_handling("fopen() error");
-	
-		printf("filename: %s\n",filename[i]);
-		retval = write(sock, filename[i], sizeof(filename[i]));
-	
-		if(retval == -1)
-			error_handling("write() error1");
- 
-		fseek(fp, 0, SEEK_END);
-		int totalbytes = ftell(fp);
- 
-		retval = write(sock, (char *)&totalbytes, sizeof(totalbytes));
-		if(retval == -1)
-			error_handling("write() error2");
- 
-		char buf[BUF_SIZE];
-		int numread;
-		int numtotal = 0;
- 
-		rewind(fp);
-		while(1) {
-			numread = fread(buf, 1, BUF_SIZE, fp);
-			if(numread > 0) {
-				retval = write(sock, buf, numread);
-				if(retval == -1)
-					error_handling("write() error!");
-				numtotal += numread;
-			}
-			else if(numread == 0 && numtotal == totalbytes) {
-				printf("file trans complete : %d bytes\n", numtotal);
-				break;
-			}
-			else {
-				error_handling("file I/O error");
-			}
-		}
-		fclose(fp);
-		close(sock);
-		buf[0]='\0';	
-	}
 }
 
 void error_handling(char * msg)
