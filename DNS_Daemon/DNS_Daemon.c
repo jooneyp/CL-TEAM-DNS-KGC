@@ -66,6 +66,7 @@ void open_socket() {
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz;
 	int option = 1;
+	char *IP;
 	pthread_t t_id;
 	pthread_mutex_init(&mutx, NULL);
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -114,7 +115,6 @@ void * handle_clnt(void * arg)
 	int clnt_sock = *((int*)arg);
 	int i=0;
 	int retval;
-	char *IP;
 
 	BB_Keygen(URL, &bb_param);
 	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
