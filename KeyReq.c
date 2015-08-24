@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 		error_handling("connect() error");
 	
 	pthread_create(&snd_thread, NULL, send_param, (void*)&sock);
-	pthread_create(&rcv_thread, NULL, recv_msg, (void*)&sock);
+	pthread_create(&rcv_thread, NULL, recv_param, (void*)&sock);
 	pthread_join(snd_thread, &thread_return);
 	pthread_join(rcv_thread, &thread_return);
 	close(sock);  
@@ -66,7 +66,7 @@ void * recv_param(void * arg)   // read thread main
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
-    serveraddr.sin_port = htons(atoi(argv[1]));
+    serveraddr.sin_port = htons(5959);
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     retval = bind(listen_sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
     if(retval == -1)
