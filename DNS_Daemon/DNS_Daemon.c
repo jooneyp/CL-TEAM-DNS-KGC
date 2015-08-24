@@ -123,6 +123,8 @@ void * handle_clnt(void * arg)
 
 	BB_Keygen(URL, &bb_param);
 
+	close(clnt_sock);
+
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(sock == -1)
 		error_handling("socket() error");
