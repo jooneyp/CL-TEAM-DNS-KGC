@@ -155,7 +155,7 @@ void * handle_clnt(void * arg)
 		}
 		fclose(fp);
 		i++;
-		strncpy(filename, "/My_param", sizeof(filename) + sizeof("/My_param"));
+		strncpy(filename, "My_param/", sizeof(filename) + sizeof("My_param/"));
 		strncat(filename, files[i], sizeof(filename) + sizeof(files[i]));
 	}
 	pthread_mutex_lock(&mutx);
