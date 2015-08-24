@@ -65,6 +65,7 @@ void open_socket() {
 	int serv_sock, clnt_sock;
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz;
+	int option = 1;
 	pthread_t t_id;
 	pthread_mutex_init(&mutx, NULL);
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -78,6 +79,7 @@ void open_socket() {
 		error_handling("bind() error");
 	if(listen(serv_sock, 5) == -1)
 		error_handling("listen() error");
+	setsockopt( serv_sock, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option) );
 	
 	while(1)
 	{

@@ -24,12 +24,12 @@ int main(int argc, char **argv)
 	pthread_t snd_thread, rcv_thread;
 	void * thread_return;
 	if(argc!=4) {
-		printf("Usage : %s <Target_IP> <IP> <URL>\n", argv[0]);
+		printf("Usage : %s <Target_IP> <URL> <IP>\n", argv[0]);
 		exit(1);
 	}
 
 	strcpy(param, argv[2]);
-	strcat(param, "^"); strcat(param, argv[3]);
+	strcat(param, "^"); 11strcat(param, argv[3]);
 	printf("%s\n", param);
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);
