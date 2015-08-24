@@ -67,6 +67,7 @@ void open_socket() {
 	int clnt_adr_sz;
 	int option = 1;
 	char *IP;
+
 	pthread_t t_id;
 	pthread_mutex_init(&mutx, NULL);
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -98,7 +99,9 @@ void open_socket() {
 	
 		pthread_create(&t_id, NULL, handle_clnt, (void*)&clnt_sock);
 		pthread_detach(t_id);
+
 		printf("Connected client IP: %s \n", inet_ntoa(clnt_adr.sin_addr));
+		strncpy(clnt_IP, inet_ntoa(clnt_adr.sin_addr), sizeof(clnt_adr.sin_addr));
 	}
 
 	close(serv_sock);
@@ -112,14 +115,29 @@ void * handle_clnt(void * arg)
 		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param", "sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
 	};
 	char filename[256] = "My_param/";
-	int clnt_sock = *((int*)arg);
+	int sock;
 	int i=0;
 	int retval;
+	struct sockaddr_in serveraddr;
 
 	BB_Keygen(URL, &bb_param);
+	close(clnt_sock);
+
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if(sock == -1)
+		err_quit("socket() error");
+	
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_port = htons(5959);
+	serveraddr.sin_addr.s_addr = htonl(inet_addr(clnt_IP));
+	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
+
+	if(retval == -1)
+		err_quit("connect() error");
+
 	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
 	while ((fp = fopen(filename, "rb")) != NULL ) {
-		printf("File Opened : filename[%d]\n", i);
+		printf("File Opened : %s\n", filename);
 		retval = write(clnt_sock, filename, sizeof(filename));
 	
 		if(retval == -1)
