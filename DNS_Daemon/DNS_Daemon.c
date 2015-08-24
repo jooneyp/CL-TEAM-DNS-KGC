@@ -99,9 +99,10 @@ void * handle_clnt(void * arg)
 {
 	BB_SYS_PARAM bb_param;
 	FILE *fp;
-	char filename[14][256] = {
-		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"
+	char files[14][256] = {
+		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param", "sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
 	};
+	char filename[256] = "/My_param";
 	int clnt_sock = *((int*)arg);
 	int i=0;
 	int retval;
@@ -113,9 +114,8 @@ void * handle_clnt(void * arg)
 	IP = strtok(URL, "^");
 	printf("2Received URL : %s\n", URL);
 	BB_Keygen(URL, &bb_param);
-
-	strcat("My_param/", filename[0]);
-	while ((fp = fopen(filename[i], "rb")) != NULL ) {
+	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
+	while ((fp = fopen(filename, "rb")) != NULL ) {
 		printf("File Opened : filename[%d]\n", i);
 		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
 	
@@ -152,6 +152,8 @@ void * handle_clnt(void * arg)
 		}
 		fclose(fp);
 		i++;
+		strncpy(filename, "/My_param", sizeof(filename) + sizeof("/My_param"));
+		strncat(filename, files[i], sizeof(filename) + sizeof(files[i]));
 	}
 	pthread_mutex_lock(&mutx);
 	for(i=0; i<clnt_cnt; i++)   // remove disconnected client
