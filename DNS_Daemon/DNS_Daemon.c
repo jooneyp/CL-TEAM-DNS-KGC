@@ -117,7 +117,7 @@ void * handle_clnt(void * arg)
 	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
 	while ((fp = fopen(filename, "rb")) != NULL ) {
 		printf("File Opened : filename[%d]\n", i);
-		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
+		retval = write(clnt_sock, filename, sizeof(filename));
 	
 		if(retval == -1)
 			error_handling("write() error1");
