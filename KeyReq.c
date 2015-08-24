@@ -11,9 +11,11 @@
 	
 void * send_param(void * arg);
 void * recv_param(void * arg);
+int recvn(int s, char *buf, int len);
 void error_handling(char * msg);
 char msg[BUF_SIZE];
 char param[100];
+
 	
 int main(int argc, char **argv)
 {
@@ -144,6 +146,24 @@ void * recv_param(void * arg)   // read thread main
     close(listen_sock);
  
     return NULL;
+}
+
+int recvn(int s, char *buf, int len) {
+    int received;
+    char *ptr = buf;
+    int left = len;
+ 
+    while(left > 0) {
+        received = read(s, ptr, left);
+        if(received == -1)
+            return -1;
+        else if(received == 0)
+            break;
+        left -= received;
+        ptr += received;
+    }
+ 
+    return (len - left);
 }
 	
 void error_handling(char *msg)
