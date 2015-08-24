@@ -110,9 +110,10 @@ void * handle_clnt(void * arg)
 	
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
-	BB_Keygen(URL, &bb_param);
 	printf("Received URL : %s\n", URL);
-	strcat("")
+	BB_Keygen(URL, &bb_param);
+	
+	strcat("My_param/", filename[0]);
 	while ((fp = fopen(filename[i], "rb")) != NULL ) {
 		printf("File Opened : filename[%d]\n", i);
 		retval = write(clnt_sock, filename[i], sizeof(filename[i]));
