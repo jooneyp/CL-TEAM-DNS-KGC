@@ -9,8 +9,8 @@
 #define BUF_SIZE 4096
 #define NAME_SIZE 20
 	
-void * send_msg(void * arg);
-void * recv_msg(void * arg);
+void * send_param(void * arg);
+void * recv_param(void * arg);
 void error_handling(char * msg);
 char msg[BUF_SIZE];
 char param[100];
@@ -55,13 +55,10 @@ void * send_param(void * arg)   // send thread main
 	return NULL;
 }
 
-void * recv_msg(void * arg)   // read thread main
+void * recv_param(void * arg)   // read thread main
 {
     int retval;
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
-    if (argc!=2) {
-     printf("Usage: %s <port>\n",argv[0]);
-    }
 
     if(listen_sock == -1)
         error_handling("socket() error");
@@ -82,7 +79,7 @@ void * recv_msg(void * arg)   // read thread main
     int client_sock;
     struct sockaddr_in clientaddr;
     int addrlen;
-    char buf[BUFSIZE];
+    char buf[BUF_SIZE];
  
     while(1) {
         addrlen = sizeof(clientaddr);
@@ -120,7 +117,7 @@ void * recv_msg(void * arg)   // read thread main
  
         int numtotal = 0;
         while(1) {
-            retval = recvn(client_sock, buf, BUFSIZE);
+            retval = recvn(client_sock, buf, BUF_SIZE);
             if(retval == -1) {
                 error_handling("recv() error");
                 break;
