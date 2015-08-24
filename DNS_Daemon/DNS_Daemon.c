@@ -122,9 +122,12 @@ void * handle_clnt(void * arg)
 	struct sockaddr_in serveraddr;
 
 	BB_Keygen(URL, &bb_param);
-
+	printf("Waiting for files ready... 5");
+	for (i=4;i>0;i--) {
+		sleep(100);
+		printf(" %d", i);
+	}
 	close(clnt_sock);
-
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(sock == -1)
 		error_handling("socket() error");
