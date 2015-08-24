@@ -31,6 +31,7 @@ int clnt_cnt=0;
 int clnt_socks[MAX_CLNT];
 pthread_mutex_t mutx;
 char clnt_IP[20];
+char URL[BUF_SIZE];
 
 int main(int argc, char **argv) {
 	BB_SYS_PARAM bb_param;
@@ -82,6 +83,11 @@ void open_socket() {
 	{
 		clnt_adr_sz=sizeof(clnt_adr);
 		clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
+	
+		read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
+		printf("1Received URL : %s\n", URL);
+		IP = strtok(URL, "^");
+		printf("2Received URL : %s\n", URL);
 		
 		pthread_mutex_lock(&mutx);
 		clnt_socks[clnt_cnt++] = clnt_sock;
@@ -106,13 +112,8 @@ void * handle_clnt(void * arg)
 	int clnt_sock = *((int*)arg);
 	int i=0;
 	int retval;
-	char URL[BUF_SIZE];
 	char *IP;
-	
-	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
-	printf("1Received URL : %s\n", URL);
-	IP = strtok(URL, "^");
-	printf("2Received URL : %s\n", URL);
+
 	BB_Keygen(URL, &bb_param);
 	strncat(filename, files[0], sizeof(filename) + sizeof(files[0]));
 	while ((fp = fopen(filename, "rb")) != NULL ) {
