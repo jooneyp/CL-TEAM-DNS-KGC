@@ -117,7 +117,7 @@ void send_params() {
 	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
-		if(filename[i][0] != "s") {
+		if(filename[i][0] != 's') {
 			strncpy(fullname, "My_param/", 10);
 		} else {
 			strncpy(fullname, "new_key_level_1/", 17);
