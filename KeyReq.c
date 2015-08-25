@@ -61,11 +61,9 @@ void * recv_param(void * arg)   // read thread main
 {
     int retval;
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
-    
-    if (argc!=2)
-        printf("Usage: %s <port>\n",argv[0]);
+
     if(listen_sock == -1)
-        err_quit("socket() error");
+        error_handling("socket() error");
  
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
@@ -74,22 +72,22 @@ void * recv_param(void * arg)   // read thread main
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     retval = bind(listen_sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
     if(retval == -1)
-        err_quit("bind() error");
+        error_handling("bind() error");
  
     retval = listen(listen_sock, 5);
     if(retval == -1)
-        err_quit("listen() error");
+        error_handling("listen() error");
  
     int client_sock;
     struct sockaddr_in clientaddr;
     int addrlen;
-    char buf[BUFSIZE];
+    char buf[BUF_SIZE];
  
     while(1) {
         addrlen = sizeof(clientaddr);
         client_sock = accept(listen_sock, (struct sockaddr*) &clientaddr, &addrlen);
         if(client_sock == -1)
-            err_quit("accept() error");
+            error_handling("accept() error");
  
         printf("\n->FileSender connect : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
@@ -97,7 +95,7 @@ void * recv_param(void * arg)   // read thread main
         memset(filename, 0, sizeof(filename));
         retval = recvn(client_sock, filename, 256);
         if(retval == -1) {
-            err_quit("recv() error");
+            error_handling("recv() error");
             close(client_sock);
             continue;
         }
@@ -106,7 +104,7 @@ void * recv_param(void * arg)   // read thread main
         int totalbytes;
         retval = recvn(client_sock, (char *) &totalbytes, sizeof(totalbytes));
         if(retval == -1) {
-            err_quit("recv() error");
+            error_handling("recv() error");
             close(client_sock);
             continue;
         }
@@ -114,7 +112,7 @@ void * recv_param(void * arg)   // read thread main
  
         FILE *fp = fopen(filename, "wb");
         if(fp == NULL) {
-            err_quit("File I/O error");
+            error_handling("File I/O error");
             close(client_sock);
             continue;
         }
@@ -123,7 +121,7 @@ void * recv_param(void * arg)   // read thread main
         while(1) {
             retval = recvn(client_sock, buf, BUFSIZE);
             if(retval == -1) {
-                err_quit("recv() error");
+                error_handling("recv() error");
                 break;
             }
             else if(retval == 0)
