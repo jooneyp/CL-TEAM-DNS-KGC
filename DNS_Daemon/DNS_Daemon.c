@@ -125,7 +125,8 @@ void send_params() {
 		strncat(fullname, filename[i], strlen(fullname) + strlen(filename[i]));
 		if((fp = fopen(fullname, "rb")) != NULL) {
 
-			if (socket(PF_INET, SOCK_STREAM, 0) == -1)
+			sock = socket(PF_INET, SOCK_STREAM, 0);
+			if (sock == -1)
 				error_handling("socket() error");
 			memset(&serveraddr, 0, sizeof(serveraddr));
 			serveraddr.sin_family = AF_INET;
