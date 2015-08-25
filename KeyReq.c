@@ -43,10 +43,10 @@ int main(int argc, char **argv)
 		error_handling("connect() error");
 	
 	pthread_create(&snd_thread, NULL, send_param, (void*)&sock);
-	pthread_create(&rcv_thread, NULL, recv_param, (void*)&sock);
 	pthread_join(snd_thread, &thread_return);
+	close(sock);
+	pthread_create(&rcv_thread, NULL, recv_param, (void*)&sock);
 	pthread_join(rcv_thread, &thread_return);
-	close(sock);  
 	return 0;
 }
 	
@@ -61,33 +61,35 @@ void * recv_param(void * arg)   // read thread main
 {
     int retval;
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
-
+    
+    if (argc!=2)
+        printf("Usage: %s <port>\n",argv[0]);
     if(listen_sock == -1)
-        error_handling("socket() error");
+        err_quit("socket() error");
  
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
-    serveraddr.sin_port = htons(5959);
+    serveraddr.sin_port = htons(5960);
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     retval = bind(listen_sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
     if(retval == -1)
-        error_handling("bind() error");
+        err_quit("bind() error");
  
     retval = listen(listen_sock, 5);
     if(retval == -1)
-        error_handling("listen() error");
+        err_quit("listen() error");
  
     int client_sock;
     struct sockaddr_in clientaddr;
     int addrlen;
-    char buf[BUF_SIZE];
+    char buf[BUFSIZE];
  
     while(1) {
         addrlen = sizeof(clientaddr);
         client_sock = accept(listen_sock, (struct sockaddr*) &clientaddr, &addrlen);
         if(client_sock == -1)
-            error_handling("accept() error");
+            err_quit("accept() error");
  
         printf("\n->FileSender connect : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
@@ -95,7 +97,7 @@ void * recv_param(void * arg)   // read thread main
         memset(filename, 0, sizeof(filename));
         retval = recvn(client_sock, filename, 256);
         if(retval == -1) {
-            error_handling("recv() error");
+            err_quit("recv() error");
             close(client_sock);
             continue;
         }
@@ -104,7 +106,7 @@ void * recv_param(void * arg)   // read thread main
         int totalbytes;
         retval = recvn(client_sock, (char *) &totalbytes, sizeof(totalbytes));
         if(retval == -1) {
-            error_handling("recv() error");
+            err_quit("recv() error");
             close(client_sock);
             continue;
         }
@@ -112,15 +114,16 @@ void * recv_param(void * arg)   // read thread main
  
         FILE *fp = fopen(filename, "wb");
         if(fp == NULL) {
-            error_handling("File I/O error");
+            err_quit("File I/O error");
             close(client_sock);
             continue;
         }
+ 
         int numtotal = 0;
         while(1) {
-            retval = recvn(client_sock, buf, BUF_SIZE);
+            retval = recvn(client_sock, buf, BUFSIZE);
             if(retval == -1) {
-                error_handling("recv() error");
+                err_quit("recv() error");
                 break;
             }
             else if(retval == 0)
@@ -144,7 +147,7 @@ void * recv_param(void * arg)   // read thread main
  
     close(listen_sock);
  
-    return NULL;
+    return 0;
 }
 
 int recvn(int s, char *buf, int len) {

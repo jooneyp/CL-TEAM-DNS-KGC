@@ -150,7 +150,7 @@ void * handle_clnt(void * arg)
 		error_handling("socket() error");
 	
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_port = htons(5959);
+	serveraddr.sin_port = htons(5960);
 	serveraddr.sin_addr.s_addr = htonl(inet_addr(clnt_IP));
 	retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
 
