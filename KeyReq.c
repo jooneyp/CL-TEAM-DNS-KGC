@@ -140,8 +140,6 @@ void recv_param() {
     }
  
     close(listen_sock);
- 
-    return 0;
 }
 
 int recvn(int s, char *buf, int len) {

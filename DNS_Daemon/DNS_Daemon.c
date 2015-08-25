@@ -108,14 +108,22 @@ void send_params() {
 	int count = 14;
 	struct sockaddr_in serveraddr;
 
-	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
-
+	char filename[14][256] = {
+		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param", "sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
+	};
 	FILE *fp;
+	char fullname[256];
 
 	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
-		if((fp = fopen(filename[i], "rb")) != NULL) {
+		if(filename[i][0] != s) {
+			fullname = "My_param/";
+		} else {
+			fullname = "new_key_level_1/";
+		}
+		strncat(fullname, filename[i], strlen(fullname) + strlen(filename[i]));
+		if((fp = fopen(fullname, "rb")) != NULL) {
 			sock = socket(PF_INET, SOCK_STREAM, 0);
 			if(sock == -1)
 				error_handling("socket() error");
@@ -129,7 +137,7 @@ void send_params() {
 				error_handling("connect() error");
 		
 			printf("filename: %s\n", filename[i]);
-			retval = write(sock, filename[i], sizeof(filename[i]));
+			retval = write(sock, fullname, sizeof(fullname));
 		
 			if(retval == -1)
 				error_handling("write() error1");
