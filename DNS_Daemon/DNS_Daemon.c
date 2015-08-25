@@ -108,7 +108,7 @@ void send_params() {
 	int count = 14;
 	struct sockaddr_in serveraddr;
 
-	char files[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
+	char filename[14][256]={"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param","sk_1.key","sk_2.key","sk_3.key","sk_4.key","sk_5.key","sk_6.key"};
 
 	FILE *fp;
 
@@ -141,13 +141,13 @@ void send_params() {
 			if(retval == -1)
 				error_handling("write() error2");
 	 
-			char buf[BUFSIZE];
+			char buf[BUF_SIZE];
 			int numread;
 			int numtotal = 0;
 	 
 			rewind(fp);
 			while(1) {
-				numread = fread(buf, 1, BUFSIZE, fp);
+				numread = fread(buf, 1, BUF_SIZE, fp);
 				if(numread > 0) {
 					retval = write(sock, buf, numread);
 					if(retval == -1)

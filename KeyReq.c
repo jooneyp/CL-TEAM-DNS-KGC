@@ -75,7 +75,7 @@ void recv_param() {
     int client_sock;
     struct sockaddr_in clientaddr;
     int addrlen;
-    char buf[BUFSIZE];
+    char buf[BUF_SIZE];
 
     printf("Waiting for Parameters..\n");
  
@@ -115,7 +115,7 @@ void recv_param() {
  
         int numtotal = 0;
         while(1) {
-            retval = recvn(client_sock, buf, BUFSIZE);
+            retval = recvn(client_sock, buf, BUF_SIZE);
             if(retval == -1) {
                 error_handling("recv() error");
                 break;
