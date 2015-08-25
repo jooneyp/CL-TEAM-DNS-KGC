@@ -9,10 +9,10 @@
 #define BUF_SIZE 4096
 #define NAME_SIZE 20
 	
-void * send_param(void * arg);
-void * recv_param(void * arg);
+void recv_param();
 int recvn(int s, char *buf, int len);
 void error_handling(char * msg);
+
 char msg[BUF_SIZE];
 char param[100];
 
@@ -30,7 +30,6 @@ int main(int argc, char **argv)
 
 	strcpy(param, argv[2]);
 	strcat(param, "^"); strcat(param, argv[3]);
-	printf("%s\n", param);
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	
@@ -41,27 +40,22 @@ int main(int argc, char **argv)
 	  
 	if( connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1)
 		error_handling("connect() error");
-	
-	pthread_create(&snd_thread, NULL, send_param, (void*)&sock);
-	pthread_join(snd_thread, &thread_return);
+
+	if(write(sock, param, strlen(param)) == -1) {
+		error_handling("param write() error");
+	}
 	close(sock);
-	pthread_create(&rcv_thread, NULL, recv_param, (void*)&sock);
-	pthread_join(rcv_thread, &thread_return);
+	printf("parameters Sent : %s, ", param);
+
+	recv_param();
+
 	return 0;
 }
-	
-void * send_param(void * arg)   // send thread main
-{
-	int sock = *((int*)arg);
-	write(sock, param, strlen(param));
-	return NULL;
-}
 
-void * recv_param(void * arg)   // read thread main
-{
-    int retval;
+void recv_param() {
+	int retval;
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
-
+    
     if(listen_sock == -1)
         error_handling("socket() error");
  
@@ -81,7 +75,9 @@ void * recv_param(void * arg)   // read thread main
     int client_sock;
     struct sockaddr_in clientaddr;
     int addrlen;
-    char buf[BUF_SIZE];
+    char buf[BUFSIZE];
+
+    printf("Waiting for Parameters..\n");
  
     while(1) {
         addrlen = sizeof(clientaddr);
@@ -119,7 +115,7 @@ void * recv_param(void * arg)   // read thread main
  
         int numtotal = 0;
         while(1) {
-            retval = recvn(client_sock, buf, BUF_SIZE);
+            retval = recvn(client_sock, buf, BUFSIZE);
             if(retval == -1) {
                 error_handling("recv() error");
                 break;
