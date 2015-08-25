@@ -113,7 +113,7 @@ void * handle_clnt(void * arg)
 {
 	BB_SYS_PARAM bb_param;
 	FILE *fp;
-	char files[14][256] = {
+	char files[14][256] = { 
 		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param", "sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
 	};
 	char filename[256] = "My_param/";
