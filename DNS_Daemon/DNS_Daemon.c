@@ -122,12 +122,27 @@ void * handle_clnt(void * arg)
 	struct sockaddr_in serveraddr;
 
 	BB_Keygen(URL, &bb_param);
+	
+	pthread_mutex_lock(&mutx);
+	for(i=0; i<clnt_cnt; i++)   // remove disconnected client
+	{
+		if(clnt_sock==clnt_socks[i])
+		{
+			while(i++<clnt_cnt-1)
+				clnt_socks[i]=clnt_socks[i+1];
+			break;
+		}
+	}
+	clnt_cnt--;
+	pthread_mutex_unlock(&mutx);
+	close(clnt_sock);
+
 	printf("Waiting for files ready... 5");
 	for (i=4;i>0;i--) {
 		sleep(100);
 		printf(" %d", i);
 	}
-	close(clnt_sock);
+
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(sock == -1)
 		error_handling("socket() error");
@@ -182,19 +197,6 @@ void * handle_clnt(void * arg)
 		strncpy(filename, "My_param/", sizeof(filename) + sizeof("My_param/"));
 		strncat(filename, files[i], sizeof(filename) + sizeof(files[i]));
 	}
-	pthread_mutex_lock(&mutx);
-	for(i=0; i<clnt_cnt; i++)   // remove disconnected client
-	{
-		if(clnt_sock==clnt_socks[i])
-		{
-			while(i++<clnt_cnt-1)
-				clnt_socks[i]=clnt_socks[i+1];
-			break;
-		}
-	}
-	clnt_cnt--;
-	pthread_mutex_unlock(&mutx);
-	close(clnt_sock);
 	return NULL;
 }
 
