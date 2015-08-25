@@ -32,7 +32,7 @@ int clnt_socks[MAX_CLNT];
 
 char clnt_IP[20];
 char URL[BUF_SIZE];
-char IP[BUF_SIZE];
+char *IP;
 
 int main(int argc, char **argv) {
 	BB_SYS_PARAM bb_param;
@@ -115,7 +115,7 @@ void send_params() {
 	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
 	{
-		if(fp = fopen(filename[i], "rb") != NULL) {
+		if((fp = fopen(filename[i], "rb")) != NULL) {
 			sock = socket(PF_INET, SOCK_STREAM, 0);
 			if(sock == -1)
 				error_handling("socket() error");
