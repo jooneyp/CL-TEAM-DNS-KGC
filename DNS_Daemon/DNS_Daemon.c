@@ -66,6 +66,7 @@ void open_socket() {
 	struct sockaddr_in serv_adr, clnt_adr;
 	int clnt_adr_sz;
 	int option = 1;
+	int size;
 	char *IP;
 
 	pthread_t t_id;
@@ -101,7 +102,8 @@ void open_socket() {
 		pthread_detach(t_id);
 
 		printf("Connected client IP: %s \n", inet_ntoa(clnt_adr.sin_addr));
-		strncpy(clnt_IP, inet_ntoa(clnt_adr.sin_addr), sizeof(clnt_adr.sin_addr));
+		size = strlen(inet_ntoa(clnt_adr.sin_addr));
+		strncpy(clnt_IP, inet_ntoa(clnt_adr.sin_addr), size);
 	}
 
 	close(serv_sock);
@@ -194,8 +196,8 @@ void * handle_clnt(void * arg)
 		fclose(fp);
 		close(sock);
 		i++;
-		strncpy(filename, "My_param/", sizeof(filename) + sizeof("My_param/"));
-		strncat(filename, files[i], sizeof(filename) + sizeof(files[i]));
+		strncpy(filename, "My_param/", strlen(filename) + strlen("My_param/"));
+		strncat(filename, files[i], strlen(filename) + strlen(files[i]));
 	}
 	return NULL;
 }
