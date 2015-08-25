@@ -119,7 +119,7 @@ void * recv_param(void * arg)   // read thread main
  
         int numtotal = 0;
         while(1) {
-            retval = recvn(client_sock, buf, BUFSIZE);
+            retval = recvn(client_sock, buf, BUF_SIZE);
             if(retval == -1) {
                 error_handling("recv() error");
                 break;
