@@ -33,15 +33,15 @@ int recvn(int s, char *buf, int len) {
     return (len - left);
 }
  
- // TCP/IP FTP(File Transfer Protocol)서버 부분(파일 수신만) 
+ //TCP/IP FTP(File Transfer Protocol)서버 부분(파일 수신만) 
 int main(int argc, char *argv[])
 {
     int retval;
+ 
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
-    if (argc!=2) {
-     printf("Usage: %s <port>\n",argv[0]);
-    }
 
+    if (argc!=2)
+        printf("Usage: %s <port>\n",argv[0]);
     if(listen_sock == -1)
         err_quit("socket() error");
  

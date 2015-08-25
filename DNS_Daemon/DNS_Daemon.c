@@ -137,9 +137,9 @@ void * handle_clnt(void * arg)
 	pthread_mutex_unlock(&mutx);
 	close(clnt_sock);
 
-	printf("Waiting for files ready... 5");
+	printf("Waiting for client ready... 5");
 	for (i=4;i>0;i--) {
-		sleep(5);
+		usleep(100000);
 		printf(" %d", i);
 	}
 
