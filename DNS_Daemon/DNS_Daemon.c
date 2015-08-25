@@ -118,9 +118,9 @@ void send_params() {
 	for (i = 0; i < count; i++)
 	{
 		if(filename[i][0] != s) {
-			fullname = "My_param/";
+			strncpy(fullname, "My_param/", 10);
 		} else {
-			fullname = "new_key_level_1/";
+			strncpy(fullname, "new_key_level_1/", 17);
 		}
 		strncat(fullname, filename[i], strlen(fullname) + strlen(filename[i]));
 		if((fp = fopen(fullname, "rb")) != NULL) {
