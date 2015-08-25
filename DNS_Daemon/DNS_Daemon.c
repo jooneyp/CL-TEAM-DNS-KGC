@@ -139,7 +139,7 @@ void * handle_clnt(void * arg)
 
 	printf("Waiting for files ready... 5");
 	for (i=4;i>0;i--) {
-		sleep(100);
+		sleep(5);
 		printf(" %d", i);
 	}
 
