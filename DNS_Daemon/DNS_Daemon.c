@@ -175,6 +175,15 @@ void send_params() {
 			close(sock);
 			buf[0]='\0';
 		} else {
+			sock = socket(PF_INET, SOCK_STREAM, 0);
+			if (sock == -1)
+				error_handling("socket() error");
+			memset(&serveraddr, 0, sizeof(serveraddr));
+			serveraddr.sin_family = AF_INET;
+			serveraddr.sin_port = htons(5960);
+			serveraddr.sin_addr.s_addr = inet_addr(clnt_IP);
+			retval = connect(sock, (struct sockaddr*) &serveraddr, sizeof(serveraddr));
+			write(sock, "END", strlen("END"));
 			printf("%s not found. closing socket.\n", filename[i]);
 			i = count;
 		}

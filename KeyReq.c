@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 {
 	int sock;
 	struct sockaddr_in serv_addr;
-	
+
 	if(argc!=4) {
 		printf("Usage : %s <Target_IP> <URL> <IP>\n", argv[0]);
 		exit(1);
@@ -93,6 +93,11 @@ void recv_param() {
             close(client_sock);
             continue;
         }
+        if(strcmp(filename, "END") {
+        	printf("File Transfer END\n");
+        	close(client_sock);
+        	break;
+        }
         printf("-> filename : %s\n", filename);
  
         int totalbytes;
@@ -136,7 +141,6 @@ void recv_param() {
         printf("FileSender complete : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
     }
- 
     close(listen_sock);
 }
 
