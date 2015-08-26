@@ -225,7 +225,7 @@ void named_conf() {
 	}
 	fclose(fp);
 
-	named_path = "/var/named/";
+	strcpy(named_path, "/var/named/");
 	strcat(named_path, URL); strcat(named_path, ".zone");
 	if((fp = fopen(named_path, "wt")) == NULL) {
 		printf("fopen() for %s ERROR\n", named_path);

@@ -26,15 +26,17 @@ static const char *aparam =
 	"sign0 1\n";
 
 // 입력으로 온 ID(domain name)와 자신의ID(domain nane)이 hierarchy한 구조가 맞는지 확인.
-int Hierarchy_check(unsigned char *My_ID,unsigned char *Input_ID,int My_ID_len,int Input_ID_len)
+int Hierarchy_check(unsigned char *My_ID, unsigned char *Input_ID, int My_ID_len, int Input_ID_len)
 {
 	int i;
 	int value=0;
 
-	for(i=0;i<My_ID_len;i++)
-	{if(My_ID[My_ID_len-(1+i)]==Input_ID[Input_ID_len-(1+i)])value++;}
+	for(i=0;i<My_ID_len;i++) {
+		if(My_ID[My_ID_len-(1+i)] == Input_ID[Input_ID_len-(1+i)])
+			value++;
+	}
 	
-	if((My_ID_len==value)&&(Input_ID[Input_ID_len-(1+value)]=='.'))
+	if((My_ID_len == value) && (Input_ID[Input_ID_len-(1+value)] == '.'))
 		return 1;
 	else
 		return 0;
