@@ -221,22 +221,36 @@ void named_conf() {
 
 		fprintf(fp, "%s\n", text);
 
-		printf("Added new line -----\n\n%s\n", text);
+		printf("\nAdded new line -----\n%s\n", text);
 	}
 	fclose(fp);
 
-	named_path = "/var/named/";
+	strcpy(named_path, "/var/named/");
 	strcat(named_path, URL); strcat(named_path, ".zone");
 	if((fp = fopen(named_path, "wt")) == NULL) {
 		printf("fopen() for %s ERROR\n", named_path);
 	} else {
 		text[0] = '\0';
 
-		strcat(text, "\nzone \"");
+		strcat(text, "$TTL 1D\n");
+		strcat(text, "@\tIN\tSOA\tns."); strcat(text, URL); strcat(text, ".\t(\n");
+		strcat(text, "\t0  ; serial\n");
+		strcat(text, "\t1D ; refresh\n");
+		strcat(text, "\t1H ; retry\n");
+		strcat(text, "\t1W ; expire\n");
+		strcat(text, "\t3H ) ; minimum\n\n");
+		strcat(text, "\tIN\tNS\tns."); strcat(text, URL); strcat(text, ".\n");
+		strcat(text, URL); strcat(text, ".\tIN\tA\t"); strcat(text, IP); strcat(text, "\n");
+		strcat(text, "ns\tIN\tA\t"); strcat(text, IP); strcat(text, "\n");
+		strcat(text, "\tIN\tMX\t10\t"); strcat(text, URL); strcat(text, ".\n");
+		strcat(text, "www\tIN\tA\t"); strcat(text, IP);
 
 		fprintf(fp, "%s\n", text);
 
-		printf("Added new line -----\n\n%s\n", text);
+		printf("\nCreated %s\n", named_path);
 	}
 	fclose(fp);
+	printf("\nService named restarting... ");
+	system("service named restart");
+	printf("OK\n\n");
 }

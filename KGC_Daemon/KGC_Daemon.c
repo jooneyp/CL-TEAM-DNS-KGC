@@ -247,7 +247,7 @@ void named_conf() {
 
 		fprintf(fp, "%s\n", text);
 
-		printf("Created /var/named/%s\n", named_path);
+		printf("\nCreated %s\n", named_path);
 	}
 	fclose(fp);
 }
