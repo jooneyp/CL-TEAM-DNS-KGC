@@ -83,7 +83,7 @@ void recv_param() {
         client_sock = accept(listen_sock, (struct sockaddr*) &clientaddr, &addrlen);
         if(client_sock == -1)
             error_handling("accept() error");
- 		if(filename == NULL)
+ 		if(filename[0] == '\0')
         	printf("\n->FileSender connect : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
         memset(filename, 0, sizeof(filename));
@@ -138,7 +138,7 @@ void recv_param() {
             printf("-> File trans failed\n");
  
         close(client_sock);
-        printf("FileSender complete : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
+        printf("FileSender complete : IP = %s, Port = %d\n\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
     }
     close(listen_sock);
