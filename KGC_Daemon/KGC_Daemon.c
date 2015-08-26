@@ -216,9 +216,9 @@ void named_conf() {
 		strcat(text, "\ttype master;\n");
 		strcat(text, "\tfile \""); strcat(text, URL); strcat(text, ".zone\";\n");
 		strcat(text, "\tallow-update { none; };\n");
-		strcat(text, "}\n");
+		strcat(text, "}");
 
-		fprintf(fp, "\n\n%s\n", text);
+		fprintf(fp, "%s\n", text);
 
 		printf("Added new line -----\n\n%s\n", text);
 	}
