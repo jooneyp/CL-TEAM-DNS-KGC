@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 void recv_param() {
 	int retval;
     int listen_sock = socket(PF_INET, SOCK_STREAM, 0);
+    char filename[256];
     
     if(listen_sock == -1)
         error_handling("socket() error");
@@ -82,10 +83,9 @@ void recv_param() {
         client_sock = accept(listen_sock, (struct sockaddr*) &clientaddr, &addrlen);
         if(client_sock == -1)
             error_handling("accept() error");
+ 		if(filename == NULL)
+        	printf("\n->FileSender connect : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
  
-        printf("\n->FileSender connect : IP = %s, Port = %d\n", inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));
- 
-        char filename[256];
         memset(filename, 0, sizeof(filename));
         retval = recvn(client_sock, filename, 256);
         if(retval == -1) {

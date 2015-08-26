@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 					receive_ip_url();
 					printf("BB_Keygen Start\n");
 					BB_Keygen(URL, &bb_param);
-					printf("BB_Keygen END, waiting for 1sec\n");
+					printf("BB_Keygen END\n");
 					sleep(1);
 					printf("Sending Parameters...\n");
 					send_params();
@@ -93,11 +93,11 @@ void receive_ip_url() {
 	clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
 
 	strncpy(clnt_IP, inet_ntoa(clnt_adr.sin_addr), strlen(inet_ntoa(clnt_adr.sin_addr)));
-	printf("Key Generation Request from IP : %s\n", clnt_IP);
+	printf("\nKey Generation Request from IP : %s\n", clnt_IP);
 
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
-	printf("Received URL, IP : %s, %s\n", URL, IP);
+	printf("Received URL, IP : %s, %s\n\n", URL, IP);
 	close(serv_sock);
 	close(clnt_sock);
 	// printf("IP/URL Receiver socket closed\n");
