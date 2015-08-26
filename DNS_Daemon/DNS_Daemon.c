@@ -47,15 +47,17 @@ int main(int argc, char **argv) {
 				printf("BB_Setup---------------------------------------\n");
 				break;
 			case 'd' :
-				printf("BB KGC Daemon Start\n");
-				receive_ip_url();
-				printf("BB_Keygen Start\n");
-				BB_Keygen(URL, &bb_param);
-				printf("BB_Keygen END, waiting for 1sec\n");
-				sleep(1);
-				printf("Sending Parameters...\n");
-				send_params();
-				printf("Parameters Sent\n");
+				while(1) {
+					printf("BB KGC Daemon Start\n");
+					receive_ip_url();
+					printf("BB_Keygen Start\n");
+					BB_Keygen(URL, &bb_param);
+					printf("BB_Keygen END, waiting for 1sec\n");
+					sleep(1);
+					printf("Sending Parameters...\n");
+					send_params();
+					printf("Parameters Sent\n\n");
+				}
 				break;
 			case '?' :
 				printf("Usage : %s <mode (sd)> [option]\n", argv[0]);
@@ -98,7 +100,7 @@ void receive_ip_url() {
 	printf("Received URL, IP : %s, %s\n", URL, IP);
 	close(serv_sock);
 	close(clnt_sock);
-	printf("socket closed\n");
+	// printf("IP/URL Receiver socket closed\n");
 }
 
 void send_params() {
@@ -109,7 +111,8 @@ void send_params() {
 	struct sockaddr_in serveraddr;
 
 	char filename[14][256] = {
-		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param", "sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
+		"g.param", "g_1.param", "g_2.param", "h_1.param", "h_2.param", "h_3.param", "h_4.param", "h_5.param",
+		"sk_1.key", "sk_2.key", "sk_3.key", "sk_4.key", "sk_5.key", "sk_6.key"
 	};
 	FILE *fp;
 	char fullname[256];
@@ -186,6 +189,7 @@ void send_params() {
 			write(sock, "END", strlen("END"));
 			printf("%s not found. closing socket.\n", filename[i]);
 			i = count;
+			close(sock);
 		}
 	}
 }
