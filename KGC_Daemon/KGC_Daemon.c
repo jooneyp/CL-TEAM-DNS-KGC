@@ -222,5 +222,5 @@ void named_conf() {
 
 		printf("Added new line -----\n\n%s\n", text);
 	}
-	close(fp);
+	fclose(fp);
 }
