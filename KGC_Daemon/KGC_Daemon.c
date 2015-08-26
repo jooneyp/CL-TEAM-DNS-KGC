@@ -207,7 +207,7 @@ void error_handling(char *msg)
 void named_conf() {
 	FILE *fp;
 	char text[BUF_SIZE];
-	if((fp = fopen("/etc/named.rfc1912.zones", "wt")) == NULL) {
+	if((fp = fopen("/etc/named.rfc1912.zones", "a+")) == NULL) {
 		printf("fopen() for named.rfc1912.zones ERROR\n");
 	} else {
 		text[0] = '\0';
