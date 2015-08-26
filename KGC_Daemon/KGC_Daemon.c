@@ -48,17 +48,15 @@ int main(int argc, char **argv) {
 				printf("BB_Setup---------------------------------------\n");
 				break;
 			case 'd' :
+				printf("KGC Daemon Running..\n");
 				while(1) {
-					printf("KGC Daemon Running..\n");
 					receive_ip_url();
-					printf("Generating Keys..\n");
 					BB_Keygen(URL, &bb_param);
-					printf("\nSending Parameters...\n\n");
 					sleep(1);
 					send_params();
-					printf("Parameters Sent, Configuring...\n");
 					named_conf();
-					printf("Configure END.\n\n");
+					printf("Procedure Complete.\n\n");
+
 				}
 				break;
 			case '?' :
@@ -119,6 +117,8 @@ void send_params() {
 	};
 	FILE *fp;
 	char fullname[256];
+	
+	printf("\nSending Parameters...\n\n");
 
 	// 순차적으로 있는 파마미터 및 키를 모두 전송 
 	for (i = 0; i < count; i++)
@@ -207,6 +207,7 @@ void error_handling(char *msg)
 void named_conf() {
 	FILE *fp;
 	char text[BUF_SIZE], named_path[BUF_SIZE];
+	printf("\nConfiguring named server...\n");
 	if((fp = fopen("/etc/named.rfc1912.zones", "a+")) == NULL) {
 		printf("fopen() for named.rfc1912.zones ERROR\n");
 	} else {
@@ -220,7 +221,7 @@ void named_conf() {
 
 		fprintf(fp, "%s\n", text);
 
-		printf("\nAdded new line -----\n%s\n", text);
+		printf("\nAdded new line -----%s", text);
 	}
 	fclose(fp);
 

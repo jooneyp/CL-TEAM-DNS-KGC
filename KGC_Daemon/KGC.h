@@ -29,6 +29,9 @@ void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 {
 	int Input_ID_len;
 	char ID[MAX_ID_LEN];
+
+	printf("Generating Keys..\n");
+	
 	Input_ID_len = strlen(Input_ID);
 	printf("\nInput domain name: %s\n", Input_ID);
 	printf("Input domain name len: %d\n", Input_ID_len);
@@ -66,8 +69,8 @@ int BB_param_import(BB_SYS_PARAM *bb_param) {
 	FILE *fp0;
 	unsigned char buf[MAX_INPUT];
 
-	printf("BB_param_import Start\n");
-	//페어링 생성
+	// printf("BB_param_import Start\n");
+	// 페어링 생성
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 
 	if((fp0 = fopen("My_param/msk_key.param", "rb")) != NULL) {
@@ -245,12 +248,12 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	if((element_cmp(temp1, temp2)) == 0) {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("Pairing test succeed\n");
+		printf("\nPairing test Succeed\n\n");
 		return 0;
 	} else {
 		element_clear(temp1);
 		element_clear(temp2);
-		printf("Pairing test fail\n");
+		printf("\nPairing test Failed\n\n");
 		return 1;
 	}
 }
