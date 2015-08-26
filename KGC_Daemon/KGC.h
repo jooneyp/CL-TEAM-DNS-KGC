@@ -94,10 +94,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param) {
 	BB_import_File_Controller(bb_param->h_4, "My_param/h_4.param");
 	BB_import_File_Controller(bb_param->h_5, "My_param/h_5.param");
 
-	if( paring_test(bb_param) )
-		printf("BB_param_import Succeed\n");
-	else
-		printf("BB_param_import Fail\n");
+	paring_test(bb_param);
 	return 0;
 }
 
@@ -110,8 +107,6 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_t r;
 	element_t temp;
 	element_t h_ID;
-
-	printf("\nBB_KeyGen_level_1 Start\n");
 
 	fp1 = fopen("new_key_level_1/sk_1.key", "wb");
 	fp2 = fopen("new_key_level_1/sk_2.key", "wb");
@@ -152,8 +147,6 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 	element_clear(h_ID);
 	fclose(fp1);
 	fclose(fp2);
-
-	printf("\nBB_KeyGen_level_1 End\n");
 
 	return 0;
 }
@@ -225,7 +218,7 @@ void BB_Setup(BB_SYS_PARAM *bb_param)
 	element_clear(bb_param->h_5);
 	element_clear(bb_param->msk_key);
 
-	printf("BB_Setup End(Parameters stored in My_param)\n\n");
+	printf("BB_Setup End (Parameters stored in My_param)\n\n");
 }
 
 // 원소를 바이트로 바꾸었을때 바이트의 길이를 리턴

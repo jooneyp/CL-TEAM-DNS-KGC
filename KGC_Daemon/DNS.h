@@ -47,9 +47,7 @@ void BB_Hash_1(unsigned char *str, element_t H_1) {
 	size_t len;
 
 	len = strlen((const char *)str);
-
 	sha256(str, len, md);
-
 	element_from_hash(H_1, md, SHA256_DIGEST_SIZE);
 }
 
@@ -111,10 +109,7 @@ int BB_param_import(BB_SYS_PARAM *bb_param) {
 	BB_import_File_Controller(bb_param->h_4, "My_param/h_4.param");
 	BB_import_File_Controller(bb_param->h_5, "My_param/h_5.param");
 
-    if( paring_test(bb_param) )
-    	printf("BB_param_import Succeed\n");
-	else
-		printf("BB_param_import Fail\n");
+    paring_test(bb_param);
 	return 0;
 }
 
@@ -228,23 +223,21 @@ int paring_test(BB_SYS_PARAM *bb_param)
 	element_pow_zn(temp,bb_param->g,r);
 	pairing_apply(temp2,bb_param->g_1,temp,bb_param->pairing);
 
-	if((element_cmp(temp1,temp2))==0)
-	{
-	element_clear(r);
-	element_clear(temp);
-	element_clear(temp1);
-	element_clear(temp2);
-	printf("%s\n", "Pairing test succeed!!");
-	return 0;
+	if((element_cmp(temp1,temp2))==0) {
+		element_clear(r);
+		element_clear(temp);
+		element_clear(temp1);
+		element_clear(temp2);
+		printf("%s\n", "Pairing test succeed");
+		return 0;
+	} else {
+		element_clear(r);
+		element_clear(temp);
+		element_clear(temp1);
+		element_clear(temp2);
+		printf("%s\n", "Pairing test fail");
+		return 1;
 	}
-
-	else
-	element_clear(r);
-	element_clear(temp);
-	element_clear(temp1);
-	element_clear(temp2);
-	printf("%s\n", "Pairing test fail!!(something wrong)");
-	return 1;
 }
 
 

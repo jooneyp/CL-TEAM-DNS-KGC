@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 				break;
 			case 'd' :
 				while(1) {
-					printf("BB KGC Daemon Start\n");
+					printf("BB KGC Daemon Running..\n");
 					receive_ip_url();
 					printf("BB_Keygen Start\n");
 					BB_Keygen(URL, &bb_param);
@@ -100,7 +100,7 @@ void receive_ip_url() {
 
 	read(clnt_sock, URL, sizeof(URL)); // 들어오는 URL과 IP를 URL에 받는다.
 	IP = strtok(URL, "^");
-	IP = strtok(IP, "^");
+	IP = strtok(NULL, "^");
 	printf("Received URL, IP : %s, %s\n\n", URL, IP);
 	close(serv_sock);
 	close(clnt_sock);
