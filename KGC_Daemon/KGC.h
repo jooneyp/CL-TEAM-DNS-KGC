@@ -62,8 +62,7 @@ void BB_import_File_Controller(element_t e, char *filename) {
 }
 
 // 디랙토리내 My_param폴더에 있는 파라미터값을 열어서 bb_param 구조체에 하나하나 넣어주는 함수 
-int BB_param_import(BB_SYS_PARAM *bb_param) 
-{
+int BB_param_import(BB_SYS_PARAM *bb_param) {
 	FILE *fp0;
 	unsigned char buf[MAX_INPUT];
 
@@ -71,12 +70,10 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	//페어링 생성
 	pairing_init_set_buf(bb_param->pairing, aparam, strlen(aparam));
 
-	//마스터키가 있는 경우 등록(KGC이므로 있어야함) 
 	if((fp0 = fopen("My_param/msk_key.param", "rb")) != NULL) {
 		element_init_G1(bb_param->msk_key, bb_param->pairing);
 		fread(buf, sizeof(char), 129, fp0);
 		element_from_bytes(bb_param->msk_key,buf); buf[0] = '\0';
-	    element_printf("bb_param->msk_key\n");
 	}
 
 	element_init_G1(bb_param->g, bb_param->pairing);
@@ -97,10 +94,10 @@ int BB_param_import(BB_SYS_PARAM *bb_param)
 	BB_import_File_Controller(bb_param->h_4, "My_param/h_4.param");
 	BB_import_File_Controller(bb_param->h_5, "My_param/h_5.param");
 
-	//잘 읽어들였는지 페어링 테스트를 통해 확인
-	paring_test(bb_param);
-	printf("BB_param_import end\n");
-
+	if( paring_test(bb_param) )
+		printf("BB_param_import Succeed\n");
+	else
+		printf("BB_param_import Fail\n");
 	return 0;
 }
 

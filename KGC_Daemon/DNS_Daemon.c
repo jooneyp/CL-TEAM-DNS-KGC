@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "KGC.h"
+#include "DNS.h"
 
 #define BUF_SIZE 4096
 #define MAX_CLNT 256
@@ -221,7 +221,7 @@ void named_conf() {
 
 		fprintf(fp, "%s\n", text);
 
-		printf("\nAdded new line -----\n%s\n", text);
+		printf("Added new line -----\n\n%s\n", text);
 	}
 	fclose(fp);
 
@@ -232,22 +232,11 @@ void named_conf() {
 	} else {
 		text[0] = '\0';
 
-		strcat(text, "$TTL 1D\n");
-		strcat(text, "@\tIN\tSOA\tns."); strcat(text, URL); strcat(text, ".\t(\n");
-		strcat(text, "\t0  ; serial\n");
-		strcat(text, "\t1D ; refresh\n");
-		strcat(text, "\t1H ; retry\n");
-		strcat(text, "\t1W ; expire\n");
-		strcat(text, "\t3H ) ; minimum\n\n");
-		strcat(text, "\tIN\tNS\tns."); strcat(text, URL); strcat(text, ".\n");
-		strcat(text, URL); strcat(text, ".\tIN\tA\t"); strcat(text, IP); strcat(text, "\n");
-		strcat(text, "ns\tIN\tA\t"); strcat(text, IP); strcat(text, "\n");
-		strcat(text, "\tIN\tMX\t10\t"); strcat(text, URL); strcat(text, ".\n");
-		strcat(text, "www\tIN\tA\t"); strcat(text, IP);
+		strcat(text, "\nzone \"");
 
 		fprintf(fp, "%s\n", text);
 
-		printf("Created /var/named/%s\n", named_path);
+		printf("Added new line -----\n\n%s\n", text);
 	}
 	fclose(fp);
 }

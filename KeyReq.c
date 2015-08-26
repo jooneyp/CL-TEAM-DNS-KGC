@@ -27,9 +27,12 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	// Making Parameters (URL / IP)
 	strcpy(param, argv[2]);
 	strcat(param, "^"); strcat(param, argv[3]);
+	printf("Parameter : %s\n", param);
 
+	// Making Socket
 	sock = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family=AF_INET;
@@ -39,6 +42,7 @@ int main(int argc, char **argv)
 	if( connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1)
 		error_handling("connect() error");
 
+	// Send Parameters
 	if(write(sock, param, strlen(param)) == -1) {
 		error_handling("param write() error");
 	}
@@ -46,6 +50,8 @@ int main(int argc, char **argv)
 	printf("parameters Sent : %s\n", param);
 
 	recv_param();
+
+	system("cp -r new_key_level_1/* ")
 
 	return 0;
 }
