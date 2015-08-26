@@ -250,4 +250,8 @@ void named_conf() {
 		printf("\nCreated %s\n", named_path);
 	}
 	fclose(fp);
+	
+	printf("\nService named restarting... ");
+	system("service named restart");
+	printf("OK\n\n");
 }
