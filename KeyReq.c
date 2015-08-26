@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
 	recv_param();
 
-	system("cp -r new_key_level_1/* ")
+	system("cp -r new_key_level_1/* My_sk/");
 
 	return 0;
 }
