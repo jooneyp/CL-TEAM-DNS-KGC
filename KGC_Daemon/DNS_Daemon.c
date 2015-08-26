@@ -251,6 +251,8 @@ void named_conf() {
 	}
 	fclose(fp);
 	printf("\nService named restarting... ");
-	system("service named restart");
-	printf("OK\n\n");
+	if(system("service named restart"))
+		printf("Failed!!\n");
+	else
+		printf("OK\n");
 }
