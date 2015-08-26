@@ -213,9 +213,9 @@ void named_conf() {
 		text[0] = '\0';
 
 		strcat(text, "\nzone \""); strcat(text, URL); strcat(text, "\" IN {\n");
-		strcat(text, "type master;\n");
-		strcat(text, "file \""); strcat(text, URL); strcat(text, ".zone\";\n");
-		strcat(text, "allow-update { none; };\n");
+		strcat(text, "\ttype master;\n");
+		strcat(text, "\tfile \""); strcat(text, URL); strcat(text, ".zone\";\n");
+		strcat(text, "\tallow-update { none; };\n");
 		strcat(text, "}\n");
 
 		fprintf(fp, "\n\n%s\n", text);
