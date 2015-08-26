@@ -93,7 +93,7 @@ void recv_param() {
             close(client_sock);
             continue;
         }
-        if(strcmp(filename, "END")) {
+        if(strcmp(filename, "END") == 0) {
         	printf("File Transfer END\n");
         	close(client_sock);
         	break;
