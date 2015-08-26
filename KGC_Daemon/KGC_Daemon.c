@@ -26,6 +26,7 @@
 void error_handling(char * msg);
 void receive_ip_url();
 void send_params();
+void named_conf();
 
 int clnt_cnt=0;
 int clnt_socks[MAX_CLNT];
@@ -56,7 +57,9 @@ int main(int argc, char **argv) {
 					sleep(1);
 					printf("Sending Parameters...\n");
 					send_params();
-					printf("Parameters Sent\n\n");
+					printf("Parameters Sent, Configuring...\n");
+					named_conf();
+					printf("Configure END.\n\n");
 				}
 				break;
 			case '?' :
@@ -199,4 +202,25 @@ void error_handling(char *msg)
 	fputs(msg, stderr);
 	fputc('\n', stderr);
 	exit(1);
+}
+
+void named_conf() {
+	FILE *fp;
+	char text[BUF_SIZE];
+	if((fp = fopen("/etc/named.rfc1912.zones", "wt")) == NULL) {
+		printf("fopen() for named.rfc1912.zones ERROR\n");
+	} else {
+		text[0] = '\0';
+
+		strcat(text, "\nzone \""); strcat(text, URL); strcat(text, "\" IN {\n");
+		strcat(text, "type master;\n");
+		strcat(text, "file \""); strcat(text, URL); strcat(text, ".zone\";\n");
+		strcat(text, "allow-update { none; };\n");
+		strcat(text, "}\n");
+
+		fprintf(fp, "\n\n%s\n", text);
+
+		printf("Added new line -----\n\n%s\n", text);
+	}
+	close(fp);
 }
