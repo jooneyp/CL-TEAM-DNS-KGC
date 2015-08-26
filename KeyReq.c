@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	recv_param();
 
 	system("cp -r new_key_level_1/* My_sk/");
-
+	printf("Key Trnasfer complete\n");
 	return 0;
 }
 
