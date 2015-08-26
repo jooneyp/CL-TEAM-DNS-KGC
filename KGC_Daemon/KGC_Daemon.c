@@ -48,15 +48,15 @@ int main(int argc, char **argv) {
 				printf("BB_Setup---------------------------------------\n");
 				break;
 			case 'd' :
-				printf("KGC Daemon Running..\n");
+				printf("KGC Daemon Running...\n");
 				while(1) {
 					receive_ip_url();
 					BB_Keygen(URL, &bb_param);
 					sleep(1);
 					send_params();
 					named_conf();
-					printf("Procedure Complete.\n\n");
-
+					printf("\nProcedure Complete.\n\n");
+					printf("Waiting for Request...");
 				}
 				break;
 			case '?' :
@@ -252,6 +252,7 @@ void named_conf() {
 	fclose(fp);
 
 	printf("\nService named restarting... ");
+	sleep(1);
 	if(system("service named restart"))
 		printf("Failed!!\n");
 	else

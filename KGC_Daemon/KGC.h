@@ -30,8 +30,8 @@ void BB_Keygen(unsigned char *Input_ID, BB_SYS_PARAM *bb_param)
 	int Input_ID_len;
 	char ID[MAX_ID_LEN];
 
-	printf("Generating Keys..\n");
-	
+	printf("Generating Keys...\n");
+
 	Input_ID_len = strlen(Input_ID);
 	printf("\nInput domain name: %s\n", Input_ID);
 	printf("Input domain name len: %d\n", Input_ID_len);
