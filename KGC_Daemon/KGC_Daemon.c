@@ -39,6 +39,11 @@ int main(int argc, char **argv) {
 	BB_SYS_PARAM bb_param;
 	int param_opt;
 
+	if(system("cd My_param"))
+		system("mkdir My_param");
+	if(system("cd new_key_level_1"))
+		system("mkdir My_param");
+
 	while (-1 != (param_opt = getopt(argc, argv, "sd"))) {
 		switch(param_opt)
 		{

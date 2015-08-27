@@ -27,6 +27,13 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	if(system("cd My_param"))
+		system("mkdir My_param");
+	if(system("cd new_key_level_1"))
+		system("mkdir My_param");
+	if(system("cd My_sk"))
+		system("mkdir My_sk");
+
 	// Making Parameters (URL / IP)
 	strcpy(param, argv[2]);
 	strcat(param, "^"); strcat(param, argv[3]);
