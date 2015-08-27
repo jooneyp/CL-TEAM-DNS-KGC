@@ -135,8 +135,8 @@ int BB_KeyGen_level_1(unsigned char *ID, BB_SYS_PARAM *bb_param)
 		((element_len(bb_param->sk_1) < 128) || (element_len(bb_param->sk_2) < 128));
 
 
-	element_printf("bb_param->sk_1 : %B\n", bb_param->sk_1);
-	element_printf("bb_param->sk_2 : %B\n", bb_param->sk_2);
+	// element_printf("bb_param->sk_1 : %B\n", bb_param->sk_1);
+	// element_printf("bb_param->sk_2 : %B\n", bb_param->sk_2);
 
 	element_to_bytes(buf, bb_param->sk_1);
 	fwrite(buf, sizeof(char), (int)strlen(buf), fp1);
